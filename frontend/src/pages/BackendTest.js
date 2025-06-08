@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function Test() {
+function BackendTest() {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
@@ -20,4 +20,4 @@ function Test() {
     
 }
 
-export default Test;
+export default BackendTest;
