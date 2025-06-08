@@ -1,4 +1,5 @@
 import React from 'react';
+import Test from './Test';
 //import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
@@ -16,6 +17,7 @@ function HomePage() {
                 <button>
                     Found an item?
                 </button>
+                <Test />
             </div>
         </>
     );

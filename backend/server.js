@@ -8,9 +8,10 @@ app.use(express.json());
 
 //sample route to test the server 
 app.get('/', (req, res) => {
+    console.log('GET / route hit');
     res.send('Server is running');
 });
 
 app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}}`);
+    console.log(`Server listening on port ${PORT}`);
 })
