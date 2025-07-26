@@ -1,6 +1,5 @@
 import React from "react";
 import BackendTest from "./BackendTest";
-import DatabaseTest from "./DatabaseTest";
 
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +17,6 @@ function HomePage() {
           Found an item?
         </button>
         <BackendTest />
-        <DatabaseTest />
       </div>
     </>
   );

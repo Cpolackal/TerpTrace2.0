@@ -13,6 +13,34 @@ function FoundSomething() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { url, imageName } = await fetch("http://localhost:5001/generate-url")
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error("Error generating URL:", err);
+        return { url: null, imageName: null };
+      });
+
+    // This brings the signed URL from the backend (s3.js)
+
+    await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": "image/jpeg" },
+      body: formData.image,
+    });
+    const imageUrl = url.split("?")[0];
+    console.log(imageUrl);
+    // this uploads the image to s3 and saves the base url
+
+    formData.imageName = imageName;
+
+    await fetch("http://localhost:5001/saveFoundSomething", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
   };
 
   const handleChange = (e) => {
@@ -25,11 +53,6 @@ function FoundSomething() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setFormData((prevState) => ({
-      ...prevState,
-      image: file,
-    }));
-
     const preview = URL.createObjectURL(file);
     setImagePreview(preview);
   };
@@ -58,14 +81,14 @@ function FoundSomething() {
           type="text"
           name="description"
           placeholder="Color, Material etc."
-          value={formData.locationFound}
+          value={formData.description}
           onChange={handleChange}
           required
         />
         <input
           type="text"
           name="returnedTo"
-          placeHolder="Where did you return it?"
+          placeholder="Where did you return it?"
           value={formData.returnedTo}
           onChange={handleChange}
           required

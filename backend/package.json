@@ -1,6 +1,7 @@
 {
   "name": "terptrace-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend server for TerpTrace lost and found platform",
   "main": "src/index.js",
   "scripts": {
@@ -9,13 +10,18 @@
     "test": "jest"
   },
   "dependencies": {
-    "@google-cloud/vision": "^4.0.2",
+    "@aws-sdk/client-bedrock-runtime": "^3.848.0",
+    "@aws-sdk/protocol-http": "^3.370.0",
+    "@aws-sdk/signature-v4": "^3.370.0",
+    "@aws-sdk/util-buffer-from": "^3.310.0",
+    "@pinecone-database/pinecone": "^6.1.2",
     "aws-sdk": "^2.1692.0",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "firebase-admin": "^12.7.0",
     "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
