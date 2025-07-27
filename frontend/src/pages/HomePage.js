@@ -12,9 +12,11 @@ function HomePage() {
         <h1 style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           TerpTrace
         </h1>
-        <button>Lost Something?</button>
+        <button onClick={() => navigate("/LostSomething")}>
+          Lost Something?
+        </button>
         <button onClick={() => navigate("/FoundSomething")}>
-          Found an item?
+          Found Something?
         </button>
         <BackendTest />
       </div>

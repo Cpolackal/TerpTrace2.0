@@ -28,15 +28,16 @@ export async function generateDownloadURL(key) {
   return url;
 }
 
-export async function generateUploadURL() {
+export async function generateUploadURL(folder = "uploads") {
   const rawBytes = crypto.randomBytes(16);
   const imageName = rawBytes.toString("hex");
 
+  const key = `${folder}/${imageName}`;
   const params = {
     Bucket: bucketName,
-    Key: imageName,
+    Key: key,
     Expires: 60,
   };
   const url = await s3.getSignedUrlPromise("putObject", params);
-  return { url, imageName };
+  return { url, key };
 }

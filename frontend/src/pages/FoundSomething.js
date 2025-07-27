@@ -14,7 +14,10 @@ function FoundSomething() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { url, imageName } = await fetch("http://localhost:5001/generate-url")
+    const folder = "found-items"; // Specify the folder for found items
+    const { url, imageName } = await fetch(
+      `http://localhost:5001/generate-url?folder=${folder}`
+    )
       .then((res) => res.json())
       .catch((err) => {
         console.error("Error generating URL:", err);
@@ -33,7 +36,7 @@ function FoundSomething() {
     // this uploads the image to s3 and saves the base url
 
     formData.imageName = imageName;
-    console.log("before found something")
+    console.log("before found something");
     console.log("📝 Form data being sent:", formData);
     console.log("✅ JSON.stringify result:", JSON.stringify(formData));
     await fetch("http://localhost:5001/saveFoundSomething", {
@@ -59,7 +62,7 @@ function FoundSomething() {
       ...prevState,
       image: file,
     }));
-    console.log(file)
+    console.log(file);
     const preview = URL.createObjectURL(file);
     setImagePreview(preview);
   };

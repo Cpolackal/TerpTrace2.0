@@ -12,6 +12,25 @@ function LostSomething() {
 
   const [preview, setImagePreview] = useState(null);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const folder = "lost-items";
+    const { url, imageName } = await fetch(
+      `http://localhost:5001/generate-url?folder=${folder}`
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error("Error generating URL:", err);
+        return { url: null, imageName: null };
+      });
+
+    await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": formData.image.type },
+      body: formData.image,
+    });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({

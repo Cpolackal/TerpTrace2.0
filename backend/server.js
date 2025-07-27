@@ -33,7 +33,8 @@ app.get("/", (req, res) => {
 // Gets the signed URL from s3.js and sends to frontend
 app.get("/generate-url", async (req, res) => {
   try {
-    const { url, imageName } = await generateUploadURL();
+    const folder = req.query.folder;
+    const { url, key: imageName } = await generateUploadURL(folder);
     res.send({ url, imageName });
   } catch (error) {
     console.error("Error generating URL:", error);
@@ -42,19 +43,19 @@ app.get("/generate-url", async (req, res) => {
 });
 
 app.post("/saveFoundSomething", async (req, res) => {
-  console.log("post request successful")
+  console.log("post request successful");
   try {
     const { itemName, locationFound, description, returnedTo, imageName } =
       req.body;
     if (!imageName) {
       return res.status(400).send("Image key is required");
     }
-    console.log("ok up to now")
+    console.log("ok up to now");
     const downloadUrl = await generateDownloadURL(imageName);
-    console.log("received url")
+    console.log("received url");
     //console.log(downloadUrl)
     const response = await fetch(downloadUrl);
-    console.log("fetch status: ", response.status)
+    console.log("fetch status: ", response.status);
     if (!response.ok) {
       throw new Error("Failed to fetch image from S3");
     }
@@ -62,10 +63,9 @@ app.post("/saveFoundSomething", async (req, res) => {
     const buffer = await response.arrayBuffer();
     console.log("Buffer byte length: ", buffer.byteLength);
     const imageBytes = Buffer.from(buffer);
-    if(imageBytes.length == 0) {
+    if (imageBytes.length == 0) {
       throw new Error("ImageBytes is Empty");
     }
-
 
     let embedding;
     try {
