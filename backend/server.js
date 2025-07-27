@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { generateUploadURL, generateDownloadURL } from "./s3.js";
 import { getTitanEmbedding } from "./titan.js";
+import { searchImages } from "./search.js";
 import { Pinecone } from "@pinecone-database/pinecone";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
@@ -86,6 +87,8 @@ app.post("/saveLostSomething", async (req, res) => {
 
     const id = imageName;
 
+    const matches = await searchImages(foundItems, embedding);
+    console.log("here are the matches only: ", matches)
     await lostItems.upsert([
       {
         id,
@@ -99,8 +102,10 @@ app.post("/saveLostSomething", async (req, res) => {
         },
       },
     ]);
-
-    res.status(200).send("Item saved successfully");
+    res.status(200).json({
+      message: "Item saved successfully",
+      matches: matches
+    });
   } catch (error) {
     console.error("Error saving item:", error);
     res.status(500).send("Error saving item");
@@ -115,12 +120,8 @@ app.post("/saveFoundSomething", async (req, res) => {
     if (!imageName) {
       return res.status(400).send("Image key is required");
     }
-    console.log("ok up to now");
     const downloadUrl = await generateDownloadURL(imageName);
-    console.log("received url");
-    //console.log(downloadUrl)
     const response = await fetch(downloadUrl);
-    console.log("fetch status: ", response.status);
     if (!response.ok) {
       throw new Error("Failed to fetch image from S3");
     }
@@ -139,6 +140,9 @@ app.post("/saveFoundSomething", async (req, res) => {
       console.error("Error getting embedding:", error);
       return res.status(500).send("Error getting embedding");
     }
+
+    const matches = await searchImages(lostItems, embedding);
+    console.log("matches from backend: ", matches)
     const id = imageName;
 
     await foundItems.upsert([
@@ -154,7 +158,10 @@ app.post("/saveFoundSomething", async (req, res) => {
       },
     ]);
 
-    res.status(200).send("Item saved successfully");
+    res.status(200).json({
+      message: "Item saved successfully",
+      matches: matches
+    });
   } catch (error) {
     console.error("Error saving item:", error);
     res.status(500).send("Error saving item");

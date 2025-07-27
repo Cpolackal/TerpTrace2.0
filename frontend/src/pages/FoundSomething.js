@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function FoundSomething() {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     itemName: "",
     locationFound: "",
@@ -36,16 +40,23 @@ function FoundSomething() {
     // this uploads the image to s3 and saves the base url
 
     formData.imageName = imageName;
-    console.log("before found something");
-    console.log("📝 Form data being sent:", formData);
     console.log("✅ JSON.stringify result:", JSON.stringify(formData));
-    await fetch("http://localhost:5001/saveFoundSomething", {
+    const response = await fetch("http://localhost:5001/saveFoundSomething", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
+    const response_data = await response.json()
+    const matches = response_data.matches
+    console.log(matches)
+    navigate("/MatchesForFoundItem", {
+      state: {
+        matches: matches
+      }
+    })
+    // need a navigation route to the matches page here
   };
 
   const handleChange = (e) => {

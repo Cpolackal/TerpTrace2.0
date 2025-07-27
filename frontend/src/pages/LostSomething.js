@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
+import { useNavigate } from 'react-router-dom';
+
 function LostSomething() {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     itemName: "",
     locationLost: "",
@@ -33,13 +38,22 @@ function LostSomething() {
     const imageUrl = url.split("?")[0];
 
     formData.imageName = imageName;
-    await fetch("http://localhost:5001/saveLostSomething", {
+    const response = await fetch("http://localhost:5001/saveLostSomething", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
+
+    const response_data = await response.json()
+    const matches = response_data.matches
+    navigate("/MatchesForLostItem", {
+      state: {
+        matches: matches
+      }
+    })
+    //need a navigation route here to matches page
   };
 
   const handleChange = (e) => {
