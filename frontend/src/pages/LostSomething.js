@@ -29,6 +29,17 @@ function LostSomething() {
       headers: { "Content-Type": formData.image.type },
       body: formData.image,
     });
+
+    const imageUrl = url.split("?")[0];
+
+    formData.imageName = imageName;
+    await fetch("http://localhost:5001/saveLostSomething", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
   };
 
   const handleChange = (e) => {
@@ -51,7 +62,7 @@ function LostSomething() {
 
   return (
     <div className="page-center">
-      <h1>Report Found Item</h1>
+      <h1>Report Lost Item</h1>
       <form className="report-form" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -61,12 +72,11 @@ function LostSomething() {
           onChange={handleChange}
           required
         />
-        input
         <input
           type="text"
           name="locationLost"
           placeholder="Where did you lose it?"
-          value={formData.locationFound}
+          value={formData.locationLost}
           onChange={handleChange}
           required
         />

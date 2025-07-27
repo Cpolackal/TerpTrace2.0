@@ -13,10 +13,13 @@ const pinecone = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY,
 });
 
-const index = pinecone.index(
-  process.env.PINECONE_INDEX,
-  process.env.PINECONE_CONTROLLER_URL
-);
+const lostItems = pinecone
+  .index(process.env.PINECONE_INDEX, process.env.PINECONE_CONTROLLER_URL)
+  .namespace("lost-items");
+
+const foundItems = pinecone
+  .index(process.env.PINECONE_INDEX, process.env.PINECONE_CONTROLLER_URL)
+  .namespace("found-items");
 
 //initializing the app
 const app = express();
@@ -39,6 +42,68 @@ app.get("/generate-url", async (req, res) => {
   } catch (error) {
     console.error("Error generating URL:", error);
     res.status(500).send("Error generating URL");
+  }
+});
+
+app.post("/saveLostSomething", async (req, res) => {
+  console.log("post request successful");
+  try {
+    const {
+      itemName,
+      locationLost,
+      description,
+      phoneNumber,
+      emailAdress,
+      imageName,
+    } = req.body;
+    if (!imageName) {
+      return res.status(400).send("Image key is required");
+    }
+    console.log("ok up to now");
+    const downloadUrl = await generateDownloadURL(imageName);
+    console.log("received url");
+    //console.log(downloadUrl)
+    const response = await fetch(downloadUrl);
+    console.log("fetch status: ", response.status);
+    if (!response.ok) {
+      throw new Error("Failed to fetch image from S3");
+    }
+
+    const buffer = await response.arrayBuffer();
+    console.log("Buffer byte length: ", buffer.byteLength);
+    const imageBytes = Buffer.from(buffer);
+    if (imageBytes.length == 0) {
+      throw new Error("ImageBytes is Empty");
+    }
+
+    let embedding;
+    try {
+      embedding = await getTitanEmbedding(imageBytes);
+    } catch (error) {
+      console.error("Error getting embedding:", error);
+      return res.status(500).send("Error getting embedding");
+    }
+
+    const id = imageName;
+
+    await lostItems.upsert([
+      {
+        id,
+        values: embedding,
+        metadata: {
+          itemName,
+          locationLost,
+          description,
+          phoneNumber,
+          emailAdress,
+        },
+      },
+    ]);
+
+    res.status(200).send("Item saved successfully");
+  } catch (error) {
+    console.error("Error saving item:", error);
+    res.status(500).send("Error saving item");
   }
 });
 
@@ -76,7 +141,7 @@ app.post("/saveFoundSomething", async (req, res) => {
     }
     const id = imageName;
 
-    await index.upsert([
+    await foundItems.upsert([
       {
         id,
         values: embedding,
