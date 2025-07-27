@@ -25,12 +25,12 @@ export async function getTitanEmbedding(imageBytes) {
     } catch (error) {
       throw new Error("Failed to convert image bytes to base64");
     }
-    console.log(base64Image);
+    //console.log(base64Image);
     // Create the JSON payload
     const payload = {
           inputImage: base64Image,
           embeddingConfig: {
-            outputEmbeddingLength: 256,
+            outputEmbeddingLength: 1024,
           },
     };
 

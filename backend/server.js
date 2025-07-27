@@ -42,22 +42,27 @@ app.get("/generate-url", async (req, res) => {
 });
 
 app.post("/saveFoundSomething", async (req, res) => {
+  console.log("post request successful")
   try {
     const { itemName, locationFound, description, returnedTo, imageName } =
       req.body;
     if (!imageName) {
       return res.status(400).send("Image key is required");
     }
-
+    console.log("ok up to now")
     const downloadUrl = await generateDownloadURL(imageName);
+    console.log("received url")
+    //console.log(downloadUrl)
     const response = await fetch(downloadUrl);
+    console.log("fetch status: ", response.status)
     if (!response.ok) {
       throw new Error("Failed to fetch image from S3");
     }
 
-
-    const imageBytes = Buffer.from(await response.arrayBuffer());
-    if(imageBytes == null) {
+    const buffer = await response.arrayBuffer();
+    console.log("Buffer byte length: ", buffer.byteLength);
+    const imageBytes = Buffer.from(buffer);
+    if(imageBytes.length == 0) {
       throw new Error("ImageBytes is Empty");
     }
 

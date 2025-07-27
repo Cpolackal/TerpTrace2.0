@@ -25,7 +25,7 @@ function FoundSomething() {
 
     await fetch(url, {
       method: "PUT",
-      headers: { "Content-Type": "image/jpeg" },
+      headers: { "Content-Type": formData.image.type },
       body: formData.image,
     });
     const imageUrl = url.split("?")[0];
@@ -33,7 +33,9 @@ function FoundSomething() {
     // this uploads the image to s3 and saves the base url
 
     formData.imageName = imageName;
-
+    console.log("before found something")
+    console.log("📝 Form data being sent:", formData);
+    console.log("✅ JSON.stringify result:", JSON.stringify(formData));
     await fetch("http://localhost:5001/saveFoundSomething", {
       method: "POST",
       headers: {
@@ -53,6 +55,11 @@ function FoundSomething() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setFormData((prevState) => ({
+      ...prevState,
+      image: file,
+    }));
+    console.log(file)
     const preview = URL.createObjectURL(file);
     setImagePreview(preview);
   };
