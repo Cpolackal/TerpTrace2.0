@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Logo from "../components/Logo";
 
 function LostSomething() {
 
@@ -75,70 +74,105 @@ function LostSomething() {
   };
 
   return (
-    <>
-      <Logo />
-      <div className="page-center">
-      <h1>Report Lost Item</h1>
-      <form className="report-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="itemName"
-          placeholder="What is it?"
-          value={formData.itemName}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="locationLost"
-          placeholder="Where did you lose it?"
-          value={formData.locationLost}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="Color, Material etc."
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="phoneNumber"
-          placeholder="Your phone number"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="emailAdress"
-          placeholder="Your email address"
-          value={formData.emailAdress}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          required
-        />
+    <div className="form-container">
+      <h1 className="form-title">Report Lost Item</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className="form-label">What is it?</label>
+          <input
+            type="text"
+            name="itemName"
+            className="form-input"
+            placeholder="Enter item name"
+            value={formData.itemName}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Where did you lose it?</label>
+          <input
+            type="text"
+            name="locationLost"
+            className="form-input"
+            placeholder="Enter location"
+            value={formData.locationLost}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Description</label>
+          <textarea
+            name="description"
+            className="form-textarea"
+            placeholder="Color, material, size, etc."
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Phone Number</label>
+          <input
+            type="tel"
+            name="phoneNumber"
+            className="form-input"
+            placeholder="Enter your phone number"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Email Address</label>
+          <input
+            type="email"
+            name="emailAdress"
+            className="form-input"
+            placeholder="Enter your email address"
+            value={formData.emailAdress}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Upload Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="form-input"
+            required
+          />
+        </div>
+        
         {preview && (
-          <div className="image-preview">
-            <img
-              src={preview}
-              alt="Preview"
-              style={{ maxWidth: "200px", marginTop: "10px" }}
-            />
+          <div className="form-group">
+            <label className="form-label">Image Preview</label>
+            <div className="image-preview">
+              <img
+                src={preview}
+                alt="Preview"
+                style={{ 
+                  maxWidth: "100%", 
+                  maxHeight: "200px", 
+                  borderRadius: "8px",
+                  border: "1px solid var(--border-color)"
+                }}
+              />
+            </div>
           </div>
         )}
-        <button type="submit">Submit</button>
+        
+        <button type="submit" className="form-button">Submit Report</button>
       </form>
-      </div>
-    </>
+    </div>
   );
 }
 

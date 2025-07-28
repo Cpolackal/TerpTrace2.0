@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../components/Logo";
 import { useNavigate } from "react-router-dom";
 
 function HomePage() {
@@ -31,28 +30,33 @@ function HomePage() {
   }, []);
 
   return (
-    <>
-      <Logo />
-      <div className="page-center">
-        <h1 style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-          TerpTrace
+    <div className="homepage">
+      <div className="hero-section">
+        <h1 className="hero-title">
+          Welcome to TerpTrace
         </h1>
-        <div className="homepage-buttons">
-          <button className="homepage-button" onClick={() => navigate("/LostSomething")}>
+        <p className="hero-subtitle">
+          Connect lost items with their owners at the University of Maryland
+        </p>
+        <div className="hero-buttons">
+          <button className="hero-button primary" onClick={() => navigate("/LostSomething")}>
             Lost Something?
           </button>
-          <button className="homepage-button" onClick={() => navigate("/FoundSomething")}>
+          <button className="hero-button secondary" onClick={() => navigate("/FoundSomething")}>
             Found Something?
           </button>
         </div>
       </div>
-      <div className="counter-container">
-        <div className="counter-number">
-          {count.toLocaleString()}
+      
+      <div className="stats-section">
+        <div className="stats-card">
+          <div className="stats-number">
+            {count.toLocaleString()}
+          </div>
+          <div className="stats-label">Items Reported</div>
         </div>
-        <div className="counter-label">Items Reported</div>
       </div>
-    </>
+    </div>
   );
 }
 

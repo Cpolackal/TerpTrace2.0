@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Logo from "../components/Logo";
 
 function FoundSomething() {
 
@@ -80,64 +79,92 @@ function FoundSomething() {
   };
 
   return (
-    <>
-      <Logo />
-      <div className="page-center">
-      <h1>Report Found Item</h1>
-      <form className="report-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="itemName"
-          placeholder="What is it?"
-          value={formData.itemName}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="locationFound"
-          placeholder="Where did you find it?"
-          value={formData.locationFound}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="Color, Material etc."
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="returnedTo"
-          placeholder="Where did you return it?"
-          value={formData.returnedTo}
-          onChange={handleChange}
-          required
-        />
-        <div className="image-upload">
+    <div className="form-container">
+      <h1 className="form-title">Report Found Item</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className="form-label">What is it?</label>
+          <input
+            type="text"
+            name="itemName"
+            className="form-input"
+            placeholder="Enter item name"
+            value={formData.itemName}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Where did you find it?</label>
+          <input
+            type="text"
+            name="locationFound"
+            className="form-input"
+            placeholder="Enter location"
+            value={formData.locationFound}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Description</label>
+          <textarea
+            name="description"
+            className="form-textarea"
+            placeholder="Color, material, size, etc."
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Where did you return it?</label>
+          <input
+            type="text"
+            name="returnedTo"
+            className="form-input"
+            placeholder="Enter return location"
+            value={formData.returnedTo}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Upload Image</label>
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
+            className="form-input"
             required
           />
-          {preview && (
+        </div>
+        
+        {preview && (
+          <div className="form-group">
+            <label className="form-label">Image Preview</label>
             <div className="image-preview">
               <img
                 src={preview}
                 alt="Preview"
-                style={{ maxWidth: "200px", marginTop: "10px" }}
+                style={{ 
+                  maxWidth: "100%", 
+                  maxHeight: "200px", 
+                  borderRadius: "8px",
+                  border: "1px solid var(--border-color)"
+                }}
               />
             </div>
-          )}
-        </div>
-        <button type="submit">Submit</button>
+          </div>
+        )}
+        
+        <button type="submit" className="form-button">Submit Report</button>
       </form>
-      </div>
-    </>
+    </div>
   );
 }
 

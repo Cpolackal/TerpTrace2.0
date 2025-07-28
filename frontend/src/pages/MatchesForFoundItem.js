@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import Logo from "../components/Logo";
 
 function MatchesForFoundItems() {
   const location = useLocation();
@@ -13,10 +12,8 @@ function MatchesForFoundItems() {
   }
 
   return (
-    <>
-      <Logo />
-      <div className="matches-container">
-      <h1 className="match-title">Matched Results</h1>
+    <div className="matches-container">
+      <h1 className="matches-title">Matched Results</h1>
       {matches.length === 0 ? (
         <p className="no-matches">No matches found.</p>
       ) : (
@@ -24,9 +21,9 @@ function MatchesForFoundItems() {
           <div key={index} className="match-card">
             <div className="match-content">
               <div className="match-text">
-                <p className="match-title">
+                <h3 className="match-title">
                   {match.metadata?.itemName || "Unnamed Item"}
-                </p>
+                </h3>
 
                 {match.metadata?.locationFound && (
                   <p className="match-detail">
@@ -77,9 +74,8 @@ function MatchesForFoundItems() {
             </div>
           </div>
         ))
-              )}
-      </div>
-    </>
+      )}
+    </div>
   );
 }
 

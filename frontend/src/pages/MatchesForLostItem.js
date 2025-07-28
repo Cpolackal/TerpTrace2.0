@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import Logo from "../components/Logo";
+
 function MatchesForLostItem() {
   const location = useLocation();
   const matches = location.state?.matches || [];
@@ -12,10 +12,8 @@ function MatchesForLostItem() {
   }
 
   return (
-    <>
-      <Logo />
-      <div className="matches-container">
-      <h1 className="match-title">Matched Results</h1>
+    <div className="matches-container">
+      <h1 className="matches-title">Matched Results</h1>
       {matches.length === 0 ? (
         <p className="no-matches">No matches found.</p>
       ) : (
@@ -23,7 +21,7 @@ function MatchesForLostItem() {
           <div key={index} className="match-card">
             <div className="match-content">
               <div className="match-text">
-                <p className="match-title">{match.metadata?.itemName}</p>
+                <h3 className="match-title">{match.metadata?.itemName}</h3>
                 {match.metadata?.locationFound && (
                   <p className="match-detail">
                     <strong>Location Found:</strong> {match.metadata.locationFound}
@@ -66,9 +64,8 @@ function MatchesForLostItem() {
             </div>
           </div>
         ))
-              )}
-      </div>
-    </>
+      )}
+    </div>
   );
 }
 
