@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import Logo from "../components/Logo";
 
 function FoundSomething() {
 
@@ -79,7 +80,9 @@ function FoundSomething() {
   };
 
   return (
-    <div className="page-center">
+    <>
+      <Logo />
+      <div className="page-center">
       <h1>Report Found Item</h1>
       <form className="report-form" onSubmit={handleSubmit}>
         <input
@@ -133,7 +136,8 @@ function FoundSomething() {
         </div>
         <button type="submit">Submit</button>
       </form>
-    </div>
+      </div>
+    </>
   );
 }
 

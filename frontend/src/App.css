@@ -7,6 +7,26 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* === Logo Styling === */
+.logo-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.logo-container:hover {
+  transform: scale(1.05);
+}
+
+.logo-image {
+  width: 120px;
+  height: auto;
+  border-radius: 8px;
+}
+
 .App {
   margin: 0;
   padding: 0;
@@ -26,17 +46,6 @@ body {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
-/* Header */
-.App-header {
-  background-color: #000000;
-  padding: 2rem 0;
-  text-align: center;
-  color: white;
-  font-size: calc(10px + 2vmin);
-}
-
-/* Optional link style */
 .App-link {
   color: #61dafb;
 }
@@ -102,18 +111,46 @@ button {
   border-radius: 12px;
   font-size: 1.3rem;
   font-weight: 600;
-  width: 90vw;
-  max-width: 800px;
-  display: block;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin: 0.5rem auto;
 }
 
 button:hover {
   background-color: #b80f25;
 }
 
+/* === Homepage Button Styling === */
+.homepage-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+
+.homepage-button {
+  width: 100%;
+  padding: 1.5rem 2rem;
+  background-color: #e21833;  /* UMD Red */
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+}
+
+.homepage-button:hover {
+  background-color: #b80f25;
+  transform: translateY(-2px);
+}
 
 /* === Report Item Page === */
 .report-item {
@@ -180,4 +217,108 @@ button:hover {
 
 .report-form button:hover {
   background-color: #004080;
+}
+
+/* === Matched Results Styling === */
+.matches-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #0d0d0d;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.06);
+}
+
+.matches-container h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.match-card {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.08);
+}
+
+.match-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: nowrap;  /* no wrap to keep image right */
+}
+
+.match-text {
+  flex: 1 1 60%;
+  min-width: 250px;
+  color: white;
+}
+
+.match-title {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.match-detail {
+  font-size: 1rem;
+  color: #ccc;
+  margin: 0.3rem 0;
+}
+
+.match-score {
+  margin-top: 0.8rem;
+  font-size: 0.95rem;
+  color: #e21833;
+  font-weight: 600;
+}
+
+.match-image {
+  flex: 0 0 35%;
+  max-width: 250px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.no-matches {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #aaa;
+  margin-top: 2rem;
+}
+
+/* === Counter Styling === */
+.counter-container {
+  position: fixed;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: white;
+}
+
+.counter-number {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.counter-label {
+  font-size: 1.8rem;
+  font-weight: 500;
 }

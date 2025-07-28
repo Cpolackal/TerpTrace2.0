@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
 import { useNavigate } from 'react-router-dom';
+import Logo from "../components/Logo";
 
 function LostSomething() {
 
@@ -75,7 +75,9 @@ function LostSomething() {
   };
 
   return (
-    <div className="page-center">
+    <>
+      <Logo />
+      <div className="page-center">
       <h1>Report Lost Item</h1>
       <form className="report-form" onSubmit={handleSubmit}>
         <input
@@ -135,7 +137,8 @@ function LostSomething() {
         )}
         <button type="submit">Submit</button>
       </form>
-    </div>
+      </div>
+    </>
   );
 }
 
