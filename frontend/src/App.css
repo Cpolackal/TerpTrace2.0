@@ -1,9 +1,25 @@
+.hero-button.primary {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-medium);
+}
+.hero-button.primary:hover {
+  background: var(--primary-dark) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-heavy);
+}
 /* === Modern Design System === */
 :root {
   --primary-color: #e21833;
   --primary-dark: #b80f25;
   --secondary-color: #004080;
   --accent-color: #ffd700;
+  --umd-red: #e21833;
+  --umd-yellow: #ffd700;
+  --umd-blue: #004080;
+  --umd-white: #ffffff;
+  --umd-black: #000000;
   --background-dark: #0a0a0a;
   --background-card: #1a1a1a;
   --background-elevated: #2a2a2a;
@@ -81,11 +97,21 @@ body {
   align-items: center;
 }
 
+
 .navbar-logo .logo-image {
   width: 50px;
   height: auto;
   border-radius: var(--border-radius-small);
   transition: var(--transition);
+}
+
+.navbar-logo .navbar-title {
+  transition: var(--transition);
+}
+
+.navbar-logo:hover .logo-image,
+.navbar-logo:hover .navbar-title {
+  transform: scale(1.05);
 }
 
 .navbar-logo:hover .logo-image {
@@ -95,11 +121,7 @@ body {
 .navbar-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--umd-white);
 }
 
 .navbar-menu {
@@ -118,6 +140,9 @@ body {
   transition: var(--transition);
   position: relative;
 }
+    
+/* Make Lost Something? button plain red */
+
 
 .navbar-link:hover {
   color: var(--text-primary);
@@ -189,7 +214,7 @@ body {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 800;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--text-primary), var(--primary-color));
+  background: linear-gradient(135deg, var(--umd-white), var(--umd-red));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -230,7 +255,7 @@ body {
 }
 
 .hero-button.primary {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  background: linear-gradient(135deg, var(--umd-red), var(--umd-blue));
   color: white;
   box-shadow: var(--shadow-medium);
 }
@@ -238,6 +263,7 @@ body {
 .hero-button.primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-heavy);
+  background: linear-gradient(135deg, var(--umd-blue), var(--umd-red));
 }
 
 .hero-button.secondary {
@@ -287,45 +313,53 @@ body {
 /* === Form Styles === */
 .form-container {
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: rgba(26, 26, 26, 0.8);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
+  margin: 2.5rem auto;
+  padding: 2.5rem 2rem;
+  background: transparent;
+  border: none;
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow-medium);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .form-title {
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 800;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-label {
   display: block;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+  font-size: 1.1rem;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--text-secondary);
 }
 
 .form-input,
 .form-textarea,
 .form-select {
   width: 100%;
-  padding: 1rem;
-  background: rgba(42, 42, 42, 0.8);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-small);
+  padding: 1.2rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 1.05rem;
   transition: var(--transition);
+  backdrop-filter: blur(10px);
 }
 
 .form-input:focus,
@@ -333,31 +367,119 @@ body {
 .form-select:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(226, 24, 51, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(226, 24, 51, 0.15);
+  transform: translateY(-1px);
 }
 
 .form-textarea {
   resize: vertical;
   min-height: 120px;
+  font-family: inherit;
 }
 
 /* File input styling */
 .form-input[type="file"] {
-  padding: 0.75rem;
-  background: rgba(42, 42, 42, 0.8);
-  border: 2px dashed var(--border-color);
+  position: relative;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: var(--transition);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.form-input[type="file"]::before {
+  content: "📷 Choose Image";
+  display: block;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.form-input[type="file"]::after {
+  content: "Click to browse or drag and drop";
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
 }
 
 .form-input[type="file"]:hover {
   border-color: var(--primary-color);
-  background: rgba(226, 24, 51, 0.05);
+  background: rgba(226, 24, 51, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(226, 24, 51, 0.15);
 }
 
 .form-input[type="file"]:focus {
   border-color: var(--primary-color);
-  background: rgba(226, 24, 51, 0.1);
+  background: rgba(226, 24, 51, 0.12);
+  box-shadow: 0 0 0 4px rgba(226, 24, 51, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Hide the default file input text */
+.form-input[type="file"]::-webkit-file-upload-button {
+  visibility: hidden;
+  width: 0;
+}
+
+.form-input[type="file"]::file-selector-button {
+  visibility: hidden;
+  width: 0;
+}
+
+/* Hide the default "no file chosen" text */
+.form-input[type="file"]::-webkit-file-upload-button {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.form-input[type="file"]::file-selector-button {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Additional styling to ensure no default text shows */
+.form-input[type="file"] {
+  color: transparent;
+}
+
+.form-input[type="file"]::-webkit-file-upload-button {
+  color: transparent;
+}
+
+.form-input[type="file"]::file-selector-button {
+  color: transparent;
+}
+
+/* File input when file is selected */
+.form-input[type="file"].has-file {
+  border-color: var(--primary-color);
+  background: rgba(226, 24, 51, 0.05);
+}
+
+.form-input[type="file"].has-file::before {
+  content: "✅ Image Selected";
+  color: var(--primary-color);
+}
+
+.form-input[type="file"].has-file::after {
+  content: "Click to change image";
+  color: var(--text-secondary);
 }
 
 /* Image preview styling */
@@ -365,29 +487,35 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
-  background: rgba(42, 42, 42, 0.3);
-  border-radius: var(--border-radius-small);
-  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .form-button {
   width: 100%;
-  padding: 1rem 2rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  padding: 1.2rem 2rem;
+  background: var(--primary-color);
   color: white;
   border: none;
   border-radius: var(--border-radius);
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: var(--transition);
-  margin-top: 1rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 20px rgba(226,24,51,0.2);
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
 }
 
 .form-button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(226,24,51,0.3);
+  background: var(--primary-dark);
 }
 
 /* === Match Results Styles === */
@@ -534,7 +662,7 @@ body {
   
   .form-container {
     margin: 1rem;
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
   }
   
   .matches-container {
@@ -567,10 +695,7 @@ body {
   font-weight: 800;
   text-align: center;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--umd-white);
 }
 
 .page-subtitle {
@@ -619,7 +744,7 @@ body {
   justify-content: center;
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        background: var(--umd-yellow);
   color: var(--background-dark);
   font-size: 1.5rem;
   font-weight: 800;
@@ -777,13 +902,14 @@ body {
 }
 
 .cta-button.primary {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  background: linear-gradient(135deg, var(--umd-red), var(--umd-blue));
   color: white;
 }
 
 .cta-button.primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-medium);
+  background: linear-gradient(135deg, var(--umd-blue), var(--umd-yellow));
 }
 
 .cta-button.secondary {

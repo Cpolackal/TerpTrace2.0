@@ -5,6 +5,7 @@ import { generateUploadURL, generateDownloadURL } from "./s3.js";
 import { getTitanEmbedding } from "./titan.js";
 import { searchImages } from "./search.js";
 import { Pinecone } from "@pinecone-database/pinecone";
+import { resize } from "./Resize.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 
@@ -73,13 +74,14 @@ app.post("/saveLostSomething", async (req, res) => {
     const buffer = await response.arrayBuffer();
     console.log("Buffer byte length: ", buffer.byteLength);
     const imageBytes = Buffer.from(buffer);
+    const resizedImageBytes = await resize(imageBytes);
     if (imageBytes.length == 0) {
       throw new Error("ImageBytes is Empty");
     }
 
     let embedding;
     try {
-      embedding = await getTitanEmbedding(imageBytes);
+      embedding = await getTitanEmbedding(resizedImageBytes);
     } catch (error) {
       console.error("Error getting embedding:", error);
       return res.status(500).send("Error getting embedding");
@@ -129,13 +131,14 @@ app.post("/saveFoundSomething", async (req, res) => {
     const buffer = await response.arrayBuffer();
     console.log("Buffer byte length: ", buffer.byteLength);
     const imageBytes = Buffer.from(buffer);
+    const resizedImageBytes = await resize(imageBytes);
     if (imageBytes.length == 0) {
       throw new Error("ImageBytes is Empty");
     }
 
     let embedding;
     try {
-      embedding = await getTitanEmbedding(imageBytes);
+      embedding = await getTitanEmbedding(resizedImageBytes);
     } catch (error) {
       console.error("Error getting embedding:", error);
       return res.status(500).send("Error getting embedding");

@@ -69,13 +69,28 @@ function FoundSomething() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setFormData((prevState) => ({
-      ...prevState,
-      image: file,
-    }));
-    console.log(file);
-    const preview = URL.createObjectURL(file);
-    setImagePreview(preview);
+    
+    // Clear previous preview if it exists
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+    
+    if (file) {
+      setFormData((prevState) => ({
+        ...prevState,
+        image: file,
+      }));
+      console.log(file);
+      const preview = URL.createObjectURL(file);
+      setImagePreview(preview);
+    } else {
+      // If no file selected (user cancelled), clear the image and preview
+      setFormData((prevState) => ({
+        ...prevState,
+        image: null,
+      }));
+      setImagePreview(null);
+    }
   };
 
   return (
@@ -139,7 +154,7 @@ function FoundSomething() {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="form-input"
+            className={`form-input ${formData.image ? 'has-file' : ''}`}
             required
           />
         </div>

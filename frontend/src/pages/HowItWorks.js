@@ -13,7 +13,6 @@ function HowItWorks() {
         </p>
 
         <div className="process-section">
-          <h2>The Process</h2>
           
           <div className="process-step">
             <div className="step-number">1</div>

@@ -7,6 +7,9 @@ import MatchesForLostItem from "./pages/MatchesForLostItem"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MatchesForFoundItem from "./pages/MatchesForFoundItem";
 import HowItWorks from "./pages/HowItWorks";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Account from "./pages/Account";
 import Navbar from "./components/Navbar";
 
 function App() {
@@ -22,6 +25,9 @@ function App() {
             <Route path="/MatchesForLostItem" element={<MatchesForLostItem />} />
             <Route path="/MatchesForFoundItem" element={<MatchesForFoundItem />} />
             <Route path="/HowItWorks" element={<HowItWorks />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/account" element={<Account />} />
           </Routes>
         </main>
       </div>
