@@ -2,7 +2,6 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
-import { Readable } from "stream";
 import dotenv from "dotenv";
 dotenv.config();
 
