@@ -8,7 +8,7 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { resize } from "./Resize.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-const { db } = require('../db/firebaseAdmin')
+// import { db } from "./firebase.js"; // Assuming you have a firebase.js file for Firestore setup
 
 dotenv.config();
 
@@ -55,10 +55,10 @@ app.post("/saveLostSomething", async (req, res) => {
       itemName,
       locationLost,
       description,
-      //phoneNumber,
-      //emailAdress,
+      phoneNumber,
+      emailAdress,
       imageName,
-      foundItemMatch
+      foundItemMatch,
     } = req.body;
     if (!imageName) {
       return res.status(400).send("Image key is required");
@@ -100,7 +100,7 @@ app.post("/saveLostSomething", async (req, res) => {
     const combined = await getNorm(embedding, textEmbedding);
     const id = imageName;
 
-    const matches = await searchImages(foundItems, embedding);
+    const matches = await searchImages(foundItems, combined);
     console.log("here are the matches only: ", matches);
     await lostItems.upsert([
       {
@@ -110,8 +110,10 @@ app.post("/saveLostSomething", async (req, res) => {
           itemName,
           locationLost,
           description,
-          username, 
-          foundItemMatch // changed from phone and email
+          username,
+          phoneNumber,
+          emailAdress,
+          foundItemMatch, // changed from phone and email
         },
       },
     ]);
@@ -159,7 +161,7 @@ app.post("/saveFoundSomething", async (req, res) => {
     const textEmbedding = await getTitanTextEmbedding(sentence);
     const combined = await getNorm(embedding, textEmbedding);
 
-    const matches = await searchImages(lostItems, embedding);
+    const matches = await searchImages(lostItems, combined);
     console.log("matches from backend: ", matches);
     const id = imageName;
 
@@ -191,14 +193,13 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-app.post("/signUp", async (req, res) => {
-   try {
-      const userData = req.body
-      await db.collection('users').add(userData);
-      res.status(200).send("Registration successful");
-   } catch (error) {
-    console.error("Error signing up: ", error);
-    res.status(500).send("Error signing up");
-   }
-})
-
+// app.post("/signUp", async (req, res) => {
+//   try {
+//     const userData = req.body;
+//     await db.collection("users").add(userData);
+//     res.status(200).send("Registration successful");
+//   } catch (error) {
+//     console.error("Error signing up: ", error);
+//     res.status(500).send("Error signing up");
+//   }
+// });

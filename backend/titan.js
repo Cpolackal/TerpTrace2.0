@@ -85,7 +85,7 @@ export async function getTitanTextEmbedding(inputText) {
   }
 }
 
-export async function getNorm(vector1, vector2, weight1 = 0.1, weight2 = 0.9) {
+export async function getNorm(vector1, vector2, weight1 = 0.6, weight2 = 0.4) {
   if (vector1.length !== vector2.length) {
     throw new Error("Vectors must be of the same length");
   }
