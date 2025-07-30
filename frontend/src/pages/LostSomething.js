@@ -35,14 +35,24 @@ function LostSomething() {
     });
 
     const imageUrl = url.split("?")[0];
-
+    
     formData.imageName = imageName;
+    // creating a new json object with only some of the form fields and username
+    const data = {
+      username: "sample", //will update later
+      itemName: formData.itemName,
+      locationLost: formData.locationLost,
+      description: formData.description,
+      imageName: imageName,
+      foundItemMatch: "none"
+    };
+    console.log(JSON.stringify(data));
     const response = await fetch("http://localhost:5001/saveLostSomething", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(data),
     });
 
     const response_data = await response.json()

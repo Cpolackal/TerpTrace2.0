@@ -8,6 +8,7 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { resize } from "./Resize.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+const { db } = require('../db/firebaseAdmin')
 
 dotenv.config();
 
@@ -50,12 +51,14 @@ app.post("/saveLostSomething", async (req, res) => {
   console.log("post request successful");
   try {
     const {
+      username,
       itemName,
       locationLost,
       description,
-      phoneNumber,
-      emailAdress,
+      //phoneNumber,
+      //emailAdress,
       imageName,
+      foundItemMatch
     } = req.body;
     if (!imageName) {
       return res.status(400).send("Image key is required");
@@ -107,8 +110,8 @@ app.post("/saveLostSomething", async (req, res) => {
           itemName,
           locationLost,
           description,
-          phoneNumber,
-          emailAdress,
+          username, 
+          foundItemMatch // changed from phone and email
         },
       },
     ]);
@@ -187,3 +190,15 @@ app.post("/saveFoundSomething", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+app.post("/signUp", async (req, res) => {
+   try {
+      const userData = req.body
+      await db.collection('users').add(userData);
+      res.status(200).send("Registration successful");
+   } catch (error) {
+    console.error("Error signing up: ", error);
+    res.status(500).send("Error signing up");
+   }
+})
+
