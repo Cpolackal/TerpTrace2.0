@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import { generateUploadURL, generateDownloadURL } from "./s3.js";
-import { getTitanEmbedding } from "./titan.js";
+import { getTitanEmbedding, getTitanTextEmbedding, getNorm } from "./titan.js";
 import { searchImages } from "./search.js";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { resize } from "./Resize.js";
@@ -31,7 +31,6 @@ app.use(express.json());
 
 //sample route to test the server
 app.get("/", (req, res) => {
-
   res.send("Server is running");
 });
 
@@ -61,7 +60,8 @@ app.post("/saveLostSomething", async (req, res) => {
     if (!imageName) {
       return res.status(400).send("Image key is required");
     }
-    console.log("ok up to now");
+
+    const sentence = `${itemName} ${description}`;
     const downloadUrl = await generateDownloadURL(imageName);
     console.log("received url");
     //console.log(downloadUrl)
@@ -87,14 +87,22 @@ app.post("/saveLostSomething", async (req, res) => {
       return res.status(500).send("Error getting embedding");
     }
 
+    let textEmbedding;
+    try {
+      textEmbedding = await getTitanTextEmbedding(sentence);
+    } catch (error) {
+      return res.status(500).send(`Error generating text embedding ${error}`);
+    }
+
+    const combined = await getNorm(embedding, textEmbedding);
     const id = imageName;
 
     const matches = await searchImages(foundItems, embedding);
-    console.log("here are the matches only: ", matches)
+    console.log("here are the matches only: ", matches);
     await lostItems.upsert([
       {
         id,
-        values: embedding,
+        values: combined,
         metadata: {
           itemName,
           locationLost,
@@ -106,7 +114,7 @@ app.post("/saveLostSomething", async (req, res) => {
     ]);
     res.status(200).json({
       message: "Item saved successfully",
-      matches: matches
+      matches: matches,
     });
   } catch (error) {
     console.error("Error saving item:", error);
@@ -119,6 +127,7 @@ app.post("/saveFoundSomething", async (req, res) => {
   try {
     const { itemName, locationFound, description, returnedTo, imageName } =
       req.body;
+    const sentence = `${itemName} ${description}`;
     if (!imageName) {
       return res.status(400).send("Image key is required");
     }
@@ -144,14 +153,17 @@ app.post("/saveFoundSomething", async (req, res) => {
       return res.status(500).send("Error getting embedding");
     }
 
+    const textEmbedding = await getTitanTextEmbedding(sentence);
+    const combined = await getNorm(embedding, textEmbedding);
+
     const matches = await searchImages(lostItems, embedding);
-    console.log("matches from backend: ", matches)
+    console.log("matches from backend: ", matches);
     const id = imageName;
 
     await foundItems.upsert([
       {
         id,
-        values: embedding,
+        values: combined,
         metadata: {
           itemName,
           locationFound,
@@ -163,7 +175,7 @@ app.post("/saveFoundSomething", async (req, res) => {
 
     res.status(200).json({
       message: "Item saved successfully",
-      matches: matches
+      matches: matches,
     });
   } catch (error) {
     console.error("Error saving item:", error);

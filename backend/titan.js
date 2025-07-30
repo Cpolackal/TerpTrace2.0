@@ -2,11 +2,14 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import { Readable } from "stream";
 import dotenv from "dotenv";
 dotenv.config();
 
 const region = "us-east-1";
 const modelId = "amazon.titan-embed-image-v1";
+const textModelId = "amazon.titan-embed-text-v2:0";
+
 const bedrockClient = new BedrockRuntimeClient({
   region: region,
   credentials: {
@@ -19,61 +22,86 @@ export async function getTitanEmbedding(imageBytes) {
   try {
     // Convert image bytes to base64
 
-    let base64Image = "TEST";
-    try {
-      base64Image = imageBytes.toString("base64");
-    } catch (error) {
-      throw new Error("Failed to convert image bytes to base64");
-    }
+    const base64Image = imageBytes.toString("base64");
+
     //console.log(base64Image);
     // Create the JSON payload
     const payload = {
-          inputImage: base64Image,
-          embeddingConfig: {
-            outputEmbeddingLength: 1024,
-          },
+      inputImage: base64Image,
+      embeddingConfig: {
+        outputEmbeddingLength: 1024,
+      },
     };
 
-    let command;
-    try {
-      command = new InvokeModelCommand({
-        modelId,
-        contentType: "application/json",
-        body: JSON.stringify(payload),
-      });
-    } catch (error) {
-      throw new Error(`Failed to create InvokeModelCommand: ${error.message}`);
-    }
+    const command = new InvokeModelCommand({
+      modelId,
+      contentType: "application/json",
+      body: JSON.stringify(payload),
+    });
 
-    let response;
-    try {
-      response = await bedrockClient.send(command);
-    } catch (error) {
-      throw new Error(`Failed to send command to Bedrock: ${error.message}`);
-    }
+    const response = await bedrockClient.send(command);
 
     // The response body is a Uint8Array (Buffer), parse as JSON
-    let responseBody;
-    try {
-      responseBody = Buffer.from(response.body).toString();
-    } catch (error) {
-      throw new Error("Failed to convert response body to string");
-    }
+
+    const responseBody = Buffer.from(response.body).toString();
     if (!responseBody) {
       throw new Error("Response body is empty");
     }
 
-    let parsed;
-    try {
-      parsed = JSON.parse(responseBody);
-    } catch (error) {
-      throw new Error("Failed to parse response body as JSON");
-    }
-
+    const parsed = JSON.parse(responseBody);
     return parsed.embedding;
   } catch (error) {
     throw new Error(
       `Failed to invoke Bedrock model: ${error?.message || error}`
     );
   }
+}
+
+export async function getTitanTextEmbedding(inputText) {
+  console.log("reached titan call");
+  const payload = {
+    inputText: inputText,
+  };
+
+  const command = new InvokeModelCommand({
+    modelId: textModelId,
+    contentType: "application/json",
+    body: JSON.stringify(payload),
+  });
+  console.log("Right before call to Bedrock text model");
+  try {
+    const textResponse = await bedrockClient.send(command);
+    console.log("Here is response body: ");
+
+    const responseBody = Buffer.from(textResponse.body).toString("utf-8");
+    if (!responseBody) {
+      throw new Error("Response body is empty");
+    }
+    const parsed = JSON.parse(responseBody);
+    return parsed.embedding;
+  } catch (error) {
+    throw new Error(
+      `Failed to invoke Bedrock text model: ${error?.message || error}`
+    );
+  }
+}
+
+export async function getNorm(vector1, vector2, weight1 = 0.1, weight2 = 0.9) {
+  if (vector1.length !== vector2.length) {
+    throw new Error("Vectors must be of the same length");
+  }
+
+  const weightedVector = vector1.map(
+    (val, i) => val * weight1 + vector2[i] * weight2
+  );
+  // Normalize the weighted vector
+
+  const magnitude = Math.sqrt(
+    weightedVector.reduce((sum, val) => sum + val * val, 0)
+  );
+  if (magnitude === 0) {
+    return weightedVector.map(() => 0);
+  }
+  const norm = weightedVector.map((value) => value / magnitude);
+  return norm;
 }
