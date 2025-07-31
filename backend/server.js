@@ -8,7 +8,7 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { resize } from "./Resize.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-import { db } from "./db/firebaseAdmin.js";
+// import { db } from "./db/firebaseAdmin.js";
 
 
 dotenv.config();
