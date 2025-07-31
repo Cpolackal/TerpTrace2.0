@@ -8,7 +8,7 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { resize } from "./Resize.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-// import { db } from "./db/firebaseAdmin.js";
+import { db } from "../db/firebaseAdmin.js";
 
 
 dotenv.config();
@@ -52,15 +52,23 @@ app.post("/saveLostSomething", async (req, res) => {
   console.log("post request successful");
   try {
     const {
-      username,
+      userId,
       itemName,
       locationLost,
       description,
-      phoneNumber,
-      emailAdress,
       imageName,
       foundItemMatch,
     } = req.body;
+
+    itemMap = {
+      "itemName" : itemName,
+      "locationLost" : locationLost,
+      "description" : description,
+      "imageName" : imageName
+    }
+    
+    addLostItemToUser(userId, itemMap);
+
     if (!imageName) {
       return res.status(400).send("Image key is required");
     }
@@ -111,9 +119,7 @@ app.post("/saveLostSomething", async (req, res) => {
           itemName,
           locationLost,
           description,
-          username,
-          phoneNumber,
-          emailAdress,
+          userId,
           foundItemMatch, // changed from phone and email
         },
       },
@@ -194,13 +200,48 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-// app.post("/signUp", async (req, res) => {
-//    try {
-//       const userData = req.body
-//       await db.collection('users').add(userData);
-//       res.status(200).send("Registration successful");
-//    } catch (error) {
-//     console.error("Error signing up: ", error);
-//     res.status(500).send("Error signing up");
-//    }
-// })
+app.post("/register", async (req, res) => {
+   try {
+      const userData = req.body;
+      userData.lostItems = [];
+      const username = userData.id;
+      try {
+        await db.collection('users').doc(username).create(userData);
+      } catch (error) {
+        console.error("Error", error);
+        res.status(500).send("User already exists");
+      }
+      res.status(200).send("Registration successful");
+   } catch (error) {
+    console.error("Error signing up: ", error);
+    res.status(500).send("Error signing up");
+   }
+})
+
+app.get("/getUserItems", async (req, res) => {
+  try {
+    const username = req.query.userId;
+    const reference = db.collection('users').doc(username);
+    const doc = await reference.get()
+    const userData = doc.data();
+    const userItems = userData.lostItems || [];
+    res.status(200).json({ lostItems : userItems })
+  } catch (error) {
+    console.log("Error", error);
+    res.status(500).send("Error getting lost items")
+  }
+})
+
+async function addLostItemToUser(username, item) {
+    const reference = db.collection('users').doc(username);
+    const doc = await reference.get()
+
+    if (!doc.exists) {
+      throw new Error("User not found");
+    }
+
+    const userData = doc.data();
+    lostItems = userData.lostItems || [];
+    lostItems.push(item);
+    reference.update({lostItems: lostItems });
+}
