@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { getAuth } from "firebase/auth";
+
 
 function FoundSomething() {
 
@@ -38,9 +40,13 @@ function FoundSomething() {
     const imageUrl = url.split("?")[0];
     console.log(imageUrl);
     // this uploads the image to s3 and saves the base url
-
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const userId = user.uid;
     formData.imageName = imageName;
-    console.log("✅ JSON.stringify result:", JSON.stringify(formData));
+    formData.userId = user.uid
+    formData.userId = userId;
+    console.log("JSON.stringify result:", JSON.stringify(formData));
     const response = await fetch("http://localhost:5001/saveFoundSomething", {
       method: "POST",
       headers: {

@@ -11,6 +11,7 @@ import Login from "./users/Login";
 import Register from "./users/Register";
 import Account from "./users/Account";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./users/reroute";
 
 function App() {
   return (
@@ -20,8 +21,17 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/FoundSomething" element={<FoundSomething />} />
-            <Route path="/LostSomething" element={<LostSomething />} />
+            <Route path="/FoundSomething" element={
+              <ProtectedRoute>
+                <FoundSomething />
+              </ProtectedRoute>
+            } />
+            <Route path="/LostSomething" element={
+              <ProtectedRoute>
+              <LostSomething />
+              </ProtectedRoute>
+            } />
+            
             <Route
               path="/MatchesForLostItem"
               element={<MatchesForLostItem />}

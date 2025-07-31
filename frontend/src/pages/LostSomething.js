@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { getAuth } from "firebase/auth";
+
 
 function LostSomething() {
 
@@ -37,6 +39,9 @@ function LostSomething() {
     const imageUrl = url.split("?")[0];
     
     formData.imageName = imageName;
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const userId = user.uid;
     // creating a new json object with only some of the form fields and username
     const data = {
       username: "sample", //will update later
@@ -46,6 +51,7 @@ function LostSomething() {
       imageName: imageName,
       foundItemMatch: "none"
     };
+    formData.userId = userId;
     console.log(JSON.stringify(data));
     const response = await fetch("http://localhost:5001/saveLostSomething", {
       method: "POST",
