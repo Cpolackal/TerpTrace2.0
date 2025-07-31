@@ -16,7 +16,10 @@ export async function registerWithEmail(email, password) {
     );
     return userCredential.user;
   } catch (error) {
-    throw new Error(`Registration failed: ${error.message}`);
+    // throw new Error(`Registration failed:`, error.code);
+    console.error("Full error object:", error);
+    console.error("Error type:", typeof error);
+    console.error("Error keys:", Object.keys(error));
   }
 }
 

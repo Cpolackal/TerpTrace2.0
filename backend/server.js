@@ -8,7 +8,7 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { resize } from "./Resize.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-import { db } from "../db/firebaseAdmin.js";
+import { db } from "./db/firebaseAdmin.js";
 
 
 dotenv.config();
@@ -60,7 +60,7 @@ app.post("/saveLostSomething", async (req, res) => {
       foundItemMatch,
     } = req.body;
 
-    itemMap = {
+    const itemMap = {
       "itemName" : itemName,
       "locationLost" : locationLost,
       "description" : description,
@@ -204,7 +204,7 @@ app.post("/register", async (req, res) => {
    try {
       const userData = req.body;
       userData.lostItems = [];
-      const username = userData.id;
+      const username = userData.userId;
       try {
         await db.collection('users').doc(username).create(userData);
       } catch (error) {
@@ -241,7 +241,7 @@ async function addLostItemToUser(username, item) {
     }
 
     const userData = doc.data();
-    lostItems = userData.lostItems || [];
+    const lostItems = userData.lostItems || [];
     lostItems.push(item);
     reference.update({lostItems: lostItems });
 }

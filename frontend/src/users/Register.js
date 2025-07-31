@@ -24,8 +24,7 @@ function Register() {
 
     setIsLoading(true);
     try {
-      const userCredential = await registerWithEmail(email, password);
-      const user = userCredential.user;
+      const user = await registerWithEmail(email, password);
       console.log("Registration successful:", user);
       
       await fetch("http://localhost:5001/register", {
@@ -42,7 +41,7 @@ function Register() {
 
       navigate("/"); // redirect after successful registration
     } catch (error) {
-      console.error("Registration failed:");
+      console.error("Registration failed:", error.message);
       setError(error.message);
     } finally {
       setIsLoading(false);
