@@ -8,7 +8,7 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { resize } from "./Resize.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-const { db } = require('../db/firebaseAdmin')
+import { db } from "./db/firebaseAdmin.js";
 
 
 dotenv.config();
@@ -194,13 +194,13 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-app.post("/signUp", async (req, res) => {
-   try {
-      const userData = req.body
-      await db.collection('users').add(userData);
-      res.status(200).send("Registration successful");
-   } catch (error) {
-    console.error("Error signing up: ", error);
-    res.status(500).send("Error signing up");
-   }
-})
+// app.post("/signUp", async (req, res) => {
+//    try {
+//       const userData = req.body
+//       await db.collection('users').add(userData);
+//       res.status(200).send("Registration successful");
+//    } catch (error) {
+//     console.error("Error signing up: ", error);
+//     res.status(500).send("Error signing up");
+//    }
+// })
