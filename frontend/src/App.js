@@ -3,13 +3,13 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import FoundSomething from "./pages/FoundSomething";
 import LostSomething from "./pages/LostSomething";
-import MatchesForLostItem from "./pages/MatchesForLostItem"
+import MatchesForLostItem from "./pages/MatchesForLostItem";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MatchesForFoundItem from "./pages/MatchesForFoundItem";
 import HowItWorks from "./pages/HowItWorks";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Account from "./pages/Account";
+import Login from "./users/Login";
+import Register from "./users/Register";
+import Account from "./users/Account";
 import Navbar from "./components/Navbar";
 
 function App() {
@@ -22,8 +22,14 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/FoundSomething" element={<FoundSomething />} />
             <Route path="/LostSomething" element={<LostSomething />} />
-            <Route path="/MatchesForLostItem" element={<MatchesForLostItem />} />
-            <Route path="/MatchesForFoundItem" element={<MatchesForFoundItem />} />
+            <Route
+              path="/MatchesForLostItem"
+              element={<MatchesForLostItem />}
+            />
+            <Route
+              path="/MatchesForFoundItem"
+              element={<MatchesForFoundItem />}
+            />
             <Route path="/HowItWorks" element={<HowItWorks />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
