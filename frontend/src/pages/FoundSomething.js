@@ -44,8 +44,7 @@ function FoundSomething() {
     const user = auth.currentUser;
     const userId = user.uid;
     formData.imageName = imageName;
-    formData.userId = user.uid
-    formData.userId = userId;
+    formData.userId = userId
     console.log("JSON.stringify result:", JSON.stringify(formData));
     const response = await fetch("http://localhost:5001/saveFoundSomething", {
       method: "POST",

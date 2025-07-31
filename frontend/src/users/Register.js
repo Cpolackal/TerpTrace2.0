@@ -10,6 +10,8 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -33,10 +35,12 @@ function Register() {
         },
         body: JSON.stringify({
           userId: user.uid,
+          firstName: firstName,
+          lastName: lastName
         })
       }) 
 
-      navigate("/account"); // redirect after successful registration
+      navigate("/"); // redirect after successful registration
     } catch (error) {
       console.error("Registration failed:");
       setError(error.message);
@@ -91,6 +95,28 @@ function Register() {
             <span>or</span>
           </div>
 
+         <div classname = "register-input-group">
+            <input
+                type="text"
+                className="register-input"
+                placeholder="Enter your first name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                disabled={isLoading}
+            />
+        </div>
+        <div classname = "register-input-group">
+            <input
+                type="text"
+                className="register-input"
+                placeholder="Enter your last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                disabled={isLoading}
+            />
+        </div>
           <div className="register-input-group">
             <input
               type="email"

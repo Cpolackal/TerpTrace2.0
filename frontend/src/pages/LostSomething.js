@@ -44,14 +44,14 @@ function LostSomething() {
     const userId = user.uid;
     // creating a new json object with only some of the form fields and username
     const data = {
-      username: "sample", //will update later
+      userId: user.uid,
       itemName: formData.itemName,
       locationLost: formData.locationLost,
       description: formData.description,
       imageName: imageName,
       foundItemMatch: "none"
     };
-    formData.userId = userId;
+    
     console.log(JSON.stringify(data));
     const response = await fetch("http://localhost:5001/saveLostSomething", {
       method: "POST",
