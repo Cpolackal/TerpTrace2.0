@@ -126,6 +126,7 @@ app.post("/saveLostSomething", async (req, res) => {
     res.status(200).json({
       message: "Item saved successfully",
       matches: matches,
+      lostItemId: id,
     });
   } catch (error) {
     console.error("Error saving item:", error);
@@ -217,6 +218,29 @@ app.post("/register", async (req, res) => {
   }
 });
 
+app.post("/setFoundItemMatch", async (req, res) => {
+  try {
+    const {
+      lostItemId,
+      foundItemId
+    } = req.body;
+    const result = await lostItems.fetch([lostItemId]);
+    const lostItem = result.vectors[lostItemId]
+    const embedding = lostItem.values
+    const metadata = lostItem.metadata;
+    metadata.foundItemMatch = foundItemId
+    await lostItems.upsert([
+      {
+        id: lostItemId,
+        values: embedding,
+        metadata: metadata
+      }
+    ])
+  } catch (error) {
+    console.log("error setting found item match", error)
+  }
+})
+
 app.get("/getUserItems", async (req, res) => {
   try {
     const username = req.query.userId;
@@ -230,6 +254,7 @@ app.get("/getUserItems", async (req, res) => {
     res.status(500).send("Error getting lost items");
   }
 });
+
 
 async function addLostItemToUser(username, item) {
   const reference = db.collection("users").doc(username);

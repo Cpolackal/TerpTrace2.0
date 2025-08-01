@@ -57,14 +57,16 @@ function LostSomething() {
       },
       body: JSON.stringify(data),
     });
-
-    const response_data = await response.json();
-    const matches = response_data.matches;
+    // need to edit the response_data to include the item_id
+    const response_data = await response.json()
+    const matches = response_data.matches
+    const lostItemId = response_data.lostItemId
     navigate("/MatchesForLostItem", {
       state: {
         matches: matches,
-      },
-    });
+        lostItemId: lostItemId,
+      }
+    })
     //need a navigation route here to matches page
   };
 
