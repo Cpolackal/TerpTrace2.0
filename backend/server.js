@@ -220,34 +220,34 @@ app.post("/register", async (req, res) => {
 
 app.post("/setFoundItemMatch", async (req, res) => {
   try {
-    const {
-      lostItemId,
-      foundItemId
-    } = req.body;
+    const { lostItemId, foundItemId } = req.body;
     const result = await lostItems.fetch([lostItemId]);
-    const lostItem = result.vectors[lostItemId]
-    const embedding = lostItem.values
+    console.log("result from fetch: ", result);
+    const lostItem = result.vectors[lostItemId];
+    const embedding = lostItem.values;
     const metadata = lostItem.metadata;
-    metadata.foundItemMatch = foundItemId
+    metadata.foundItemMatch = foundItemId;
     await lostItems.upsert([
       {
         id: lostItemId,
         values: embedding,
-        metadata: metadata
-      }
-    ])
+        metadata: metadata,
+      },
+    ]);
   } catch (error) {
-    console.log("error setting found item match", error)
+    console.log("error setting found item match", error);
   }
-})
+});
 
 app.get("/getUserItems", async (req, res) => {
   try {
     const username = req.query.userId;
+    console.log("Getting user items for:", username);
     const reference = db.collection("users").doc(username);
     const doc = await reference.get();
     const userData = doc.data();
     const userItems = userData.lostItems || [];
+    console.log("User items:", userItems);
     res.status(200).json({ lostItems: userItems });
   } catch (error) {
     console.log("Error", error);
@@ -255,13 +255,19 @@ app.get("/getUserItems", async (req, res) => {
   }
 });
 
-
 async function addLostItemToUser(username, item) {
   const reference = db.collection("users").doc(username);
   const doc = await reference.get();
-
   if (!doc.exists) {
-    throw new Error("User not found");
+    try {
+      const userData = {
+        userId: username,
+        lostItems: [],
+      };
+      await db.collection("users").doc(username).create(userData);
+    } catch (error) {
+      console.error("Error", error);
+    }
   }
 
   const userData = doc.data();

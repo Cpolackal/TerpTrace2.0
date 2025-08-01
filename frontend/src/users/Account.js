@@ -41,7 +41,7 @@ function Account() {
       if (items.ok) {
         const data = await items.json();
         console.log("User items:", data);
-        setMatches(data); // Assuming the API returns an array of matches
+        setMatches(data.lostItems || []);
       } else {
         console.error("Failed to fetch user items");
         setMatches([]);

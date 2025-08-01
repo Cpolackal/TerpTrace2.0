@@ -4,17 +4,17 @@ import { useLocation } from "react-router-dom";
 function MatchesForLostItem() {
   const location = useLocation();
   const matches = location.state?.matches || [];
-  const lostItemId = location.state?.lostItemId || ""
-  const [showPopup, setShowPopup] = useState(false)
-  const [selectedMatch, setSelectedMatch] = useState(null)
-  
+  const lostItemId = location.state?.lostItemId || "";
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedMatch, setSelectedMatch] = useState(null);
+
   const handleYes = async (match) => {
     console.log("yes clicked");
     setShowPopup(false);
-    data = {
+    const data = {
       lostItemId: lostItemId,
-      foundItemId: match.metadata?.id
-    }
+      foundItemId: match.metadata?.id,
+    };
     await fetch("http://localhost:5001/setFoundItemMatch", {
       method: "POST",
       headers: {
@@ -22,7 +22,7 @@ function MatchesForLostItem() {
       },
       body: JSON.stringify(data),
     });
-  }
+  };
 
   function getS3ImageUrl(imageName) {
     const bucket = "terpitems";
@@ -37,13 +37,13 @@ function MatchesForLostItem() {
         <p className="no-matches">No matches found.</p>
       ) : (
         matches.map((match, index) => (
-          <div 
-            key={index} 
-            className="match-card" 
+          <div
+            key={index}
+            className="match-card"
             onClick={() => {
-              setSelectedMatch(match)
+              setSelectedMatch(match);
               setShowPopup(true);
-            }} 
+            }}
             style={{ cursor: "pointer" }}
           >
             <div className="match-content">
@@ -51,12 +51,14 @@ function MatchesForLostItem() {
                 <h3 className="match-title">{match.metadata?.itemName}</h3>
                 {match.metadata?.locationFound && (
                   <p className="match-detail">
-                    <strong>Location Found:</strong> {match.metadata.locationFound}
+                    <strong>Location Found:</strong>{" "}
+                    {match.metadata.locationFound}
                   </p>
                 )}
                 {match.metadata?.locationLost && (
                   <p className="match-detail">
-                    <strong>Location Lost:</strong> {match.metadata.locationLost}
+                    <strong>Location Lost:</strong>{" "}
+                    {match.metadata.locationLost}
                   </p>
                 )}
                 <p className="match-detail">
@@ -96,7 +98,11 @@ function MatchesForLostItem() {
         <div className="modal-overlay">
           <div className="modal">
             <p>Is this your item?</p>
-            <p><strong>{selectedMatch.metadata?.itemName || "Unnamed Item"}</strong></p>
+            <p>
+              <strong>
+                {selectedMatch.metadata?.itemName || "Unnamed Item"}
+              </strong>
+            </p>
             <div className="button-row">
               <button onClick={() => handleYes(selectedMatch)}>Yes</button>
               <button onClick={() => setShowPopup(false)}>No</button>
