@@ -10,7 +10,6 @@ import fetch from "node-fetch";
 import dotenv from "dotenv";
 import { db } from "./db/firebaseAdmin.js";
 
-
 dotenv.config();
 
 const pinecone = new Pinecone({
@@ -61,12 +60,12 @@ app.post("/saveLostSomething", async (req, res) => {
     } = req.body;
 
     const itemMap = {
-      "itemName" : itemName,
-      "locationLost" : locationLost,
-      "description" : description,
-      "imageName" : imageName
-    }
-    
+      itemName: itemName,
+      locationLost: locationLost,
+      description: description,
+      imageName: imageName,
+    };
+
     addLostItemToUser(userId, itemMap);
 
     if (!imageName) {
@@ -201,47 +200,47 @@ app.listen(PORT, () => {
 });
 
 app.post("/register", async (req, res) => {
-   try {
-      const userData = req.body;
-      userData.lostItems = [];
-      const username = userData.userId;
-      try {
-        await db.collection('users').doc(username).create(userData);
-      } catch (error) {
-        console.error("Error", error);
-        res.status(500).send("User already exists");
-      }
-      res.status(200).send("Registration successful");
-   } catch (error) {
+  try {
+    const userData = req.body;
+    userData.lostItems = [];
+    const username = userData.userId;
+    try {
+      await db.collection("users").doc(username).create(userData);
+    } catch (error) {
+      console.error("Error", error);
+      res.status(500).send("User already exists");
+    }
+    res.status(200).send("Registration successful");
+  } catch (error) {
     console.error("Error signing up: ", error);
     res.status(500).send("Error signing up");
-   }
-})
+  }
+});
 
 app.get("/getUserItems", async (req, res) => {
   try {
     const username = req.query.userId;
-    const reference = db.collection('users').doc(username);
-    const doc = await reference.get()
+    const reference = db.collection("users").doc(username);
+    const doc = await reference.get();
     const userData = doc.data();
     const userItems = userData.lostItems || [];
-    res.status(200).json({ lostItems : userItems })
+    res.status(200).json({ lostItems: userItems });
   } catch (error) {
     console.log("Error", error);
-    res.status(500).send("Error getting lost items")
+    res.status(500).send("Error getting lost items");
   }
-})
+});
 
 async function addLostItemToUser(username, item) {
-    const reference = db.collection('users').doc(username);
-    const doc = await reference.get()
+  const reference = db.collection("users").doc(username);
+  const doc = await reference.get();
 
-    if (!doc.exists) {
-      throw new Error("User not found");
-    }
+  if (!doc.exists) {
+    throw new Error("User not found");
+  }
 
-    const userData = doc.data();
-    const lostItems = userData.lostItems || [];
-    lostItems.push(item);
-    reference.update({lostItems: lostItems });
+  const userData = doc.data();
+  const lostItems = userData.lostItems || [];
+  lostItems.push(item);
+  reference.update({ lostItems: lostItems });
 }

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 
-
 function LostSomething() {
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -37,11 +35,10 @@ function LostSomething() {
     });
 
     const imageUrl = url.split("?")[0];
-    
+
     formData.imageName = imageName;
     const auth = getAuth();
     const user = auth.currentUser;
-    const userId = user.uid;
     // creating a new json object with only some of the form fields and username
     const data = {
       userId: user.uid,
@@ -49,9 +46,9 @@ function LostSomething() {
       locationLost: formData.locationLost,
       description: formData.description,
       imageName: imageName,
-      foundItemMatch: "none"
+      foundItemMatch: "none",
     };
-    
+
     console.log(JSON.stringify(data));
     const response = await fetch("http://localhost:5001/saveLostSomething", {
       method: "POST",
@@ -61,13 +58,13 @@ function LostSomething() {
       body: JSON.stringify(data),
     });
 
-    const response_data = await response.json()
-    const matches = response_data.matches
+    const response_data = await response.json();
+    const matches = response_data.matches;
     navigate("/MatchesForLostItem", {
       state: {
-        matches: matches
-      }
-    })
+        matches: matches,
+      },
+    });
     //need a navigation route here to matches page
   };
 
@@ -81,12 +78,12 @@ function LostSomething() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    
+
     // Clear previous preview if it exists
     if (preview) {
       URL.revokeObjectURL(preview);
     }
-    
+
     if (file) {
       setFormData((prevState) => ({
         ...prevState,
@@ -120,7 +117,7 @@ function LostSomething() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label className="form-label">Where did you lose it?</label>
           <input
@@ -133,7 +130,7 @@ function LostSomething() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label className="form-label">Description</label>
           <textarea
@@ -145,7 +142,7 @@ function LostSomething() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label className="form-label">Phone Number</label>
           <input
@@ -158,7 +155,7 @@ function LostSomething() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label className="form-label">Email Address</label>
           <input
@@ -171,18 +168,18 @@ function LostSomething() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label className="form-label">Upload Image</label>
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className={`form-input ${formData.image ? 'has-file' : ''}`}
+            className={`form-input ${formData.image ? "has-file" : ""}`}
             required
           />
         </div>
-        
+
         {preview && (
           <div className="form-group">
             <label className="form-label">Image Preview</label>
@@ -190,18 +187,20 @@ function LostSomething() {
               <img
                 src={preview}
                 alt="Preview"
-                style={{ 
-                  maxWidth: "100%", 
-                  maxHeight: "200px", 
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "200px",
                   borderRadius: "8px",
-                  border: "1px solid var(--border-color)"
+                  border: "1px solid var(--border-color)",
                 }}
               />
             </div>
           </div>
         )}
-        
-        <button type="submit" className="form-button">Submit Report</button>
+
+        <button type="submit" className="form-button">
+          Submit Report
+        </button>
       </form>
     </div>
   );
