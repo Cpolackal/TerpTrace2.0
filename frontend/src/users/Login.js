@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  loginWithEmail,
-  loginWithGoogle,
-} from "../users/auth";
+import { loginWithEmail, loginWithGoogle } from "../users/auth";
 
 function Login() {
   const navigate = useNavigate();
@@ -53,16 +50,12 @@ function Login() {
           <p className="login-subtitle">Sign in to your TerpTrace account</p>
         </div>
 
-        {error && (
-          <div className="login-error">
-            {error}
-          </div>
-        )}
+        {error && <div className="login-error">{error}</div>}
 
         <form className="login-form" onSubmit={handleSubmit}>
           <button
             type="button"
-            className={`google-login-button ${isLoading ? 'loading' : ''}`}
+            className={`google-login-button ${isLoading ? "loading" : ""}`}
             onClick={handleGoogleLogin}
             disabled={isLoading}
           >
@@ -100,10 +93,10 @@ function Login() {
 
           <button
             type="submit"
-            className={`login-button ${isLoading ? 'loading' : ''}`}
+            className={`login-button ${isLoading ? "loading" : ""}`}
             disabled={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
