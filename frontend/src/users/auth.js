@@ -7,13 +7,21 @@ import {
 } from "firebase/auth";
 import { auth } from "./firebase";
 
-export async function registerWithEmail(email, password) {
+export async function registerWithEmail(email, password, firstName, lastName) {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
+    
+    // Set the display name for the user
+    if (firstName && lastName) {
+      await userCredential.user.updateProfile({
+        displayName: `${firstName} ${lastName}`
+      });
+    }
+    
     return userCredential.user;
   } catch (error) {
     // throw new Error(`Registration failed:`, error.code);

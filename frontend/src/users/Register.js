@@ -24,7 +24,7 @@ function Register() {
 
     setIsLoading(true);
     try {
-      const user = await registerWithEmail(email, password);
+      const user = await registerWithEmail(email, password, firstName, lastName);
       console.log("Registration successful:", user);
       
       await fetch("http://localhost:5001/register", {

@@ -1,0 +1,54 @@
+[debug] [2025-08-04T14:07:47.714Z] ----------------------------------------------------------------------
+[debug] [2025-08-04T14:07:47.717Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\cpola\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-08-04T14:07:47.717Z] CLI Version:   14.11.2
+[debug] [2025-08-04T14:07:47.717Z] Platform:      win32
+[debug] [2025-08-04T14:07:47.717Z] Node Version:  v22.13.0
+[debug] [2025-08-04T14:07:47.718Z] Time:          Mon Aug 04 2025 10:07:47 GMT-0400 (Eastern Daylight Time)
+[debug] [2025-08-04T14:07:47.718Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-08-04T14:07:47.726Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-08-04T14:07:47.726Z] > authorizing via signed-in user (terptrace@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\cpola\TerpTrace2.0
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-08-04T14:10:11.900Z] Checked if tokens are valid: true, expires at: 1754320000031
+[debug] [2025-08-04T14:10:11.900Z] Checked if tokens are valid: true, expires at: 1754320000031
+[debug] [2025-08-04T14:10:11.904Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2025-08-04T14:10:12.537Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2025-08-04T14:10:12.538Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project terptrace2 (TerpTrace2) 
+[info] 
+=== Firestore Setup
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2025-08-04T14:10:16.502Z] Checked if tokens are valid: true, expires at: 1754320000031
+[debug] [2025-08-04T14:10:16.502Z] Checked if tokens are valid: true, expires at: 1754320000031
+[debug] [2025-08-04T14:10:16.502Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/terptrace2/services/firestore.googleapis.com [none]
+[debug] [2025-08-04T14:10:16.502Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/terptrace2/services/firestore.googleapis.com x-goog-quota-user=projects/terptrace2
+[debug] [2025-08-04T14:10:17.132Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/terptrace2/services/firestore.googleapis.com 200
+[debug] [2025-08-04T14:10:17.133Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/terptrace2/services/firestore.googleapis.com [omitted]
+[info] +  firestore: required API firestore.googleapis.com is enabled 
+[debug] [2025-08-04T14:10:17.145Z] Checked if tokens are valid: true, expires at: 1754320000031
+[debug] [2025-08-04T14:10:17.145Z] Checked if tokens are valid: true, expires at: 1754320000031
+[debug] [2025-08-04T14:10:17.145Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/terptrace2/databases [none]
+[debug] [2025-08-04T14:10:17.743Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/terptrace2/databases 200
+[debug] [2025-08-04T14:10:17.743Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/terptrace2/databases {"databases":[{"name":"projects/terptrace2/databases/(default)","uid":"f31aa100-99fa-4608-be2b-1701286f05e1","createTime":"2025-07-31T02:15:14.213035Z","updateTime":"2025-07-31T02:15:14.213035Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-08-04T13:10:17.299257Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"etag":"IJ2godaq8Y4DMI3w8KqI6I4D"}]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
