@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
+import API_ENDPOINTS from "../config/api.js";
 
 function Account() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function Account() {
 
       setUser(currentUser);
       const userId = currentUser.uid;
-      const items = await fetch(`/getUserItems?userId=${userId}`, {
+      const items = await fetch(API_ENDPOINTS.getUserItems(userId), {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import API_ENDPOINTS from "../config/api.js";
 
 function MatchesForLostItem() {
   const location = useLocation();
@@ -15,7 +16,7 @@ function MatchesForLostItem() {
       lostItemId: lostItemId,
       foundItemId: match.metadata?.id,
     };
-    await fetch("http://localhost:5001/setFoundItemMatch", {
+    await fetch(API_ENDPOINTS.setFoundItemMatch, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

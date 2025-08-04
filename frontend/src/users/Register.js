@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerWithEmail, loginWithGoogle } from "../users/auth";
 import { getAuth, validatePassword } from "firebase/auth";
+import API_ENDPOINTS from "../config/api.js";
 
 function Register() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function Register() {
       const user = await registerWithEmail(email, password, firstName, lastName);
       console.log("Registration successful:", user);
       
-      await fetch("http://localhost:5001/register", {
+      await fetch(API_ENDPOINTS.register, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

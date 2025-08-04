@@ -1,0 +1,18 @@
+{
+  "name": "terptrace2",
+  "version": "1.0.0",
+  "description": "TerpTrace 2.0 - Lost and Found Application",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "deploy:all": "npm run build && firebase deploy",
+    "start": "cd frontend && npm start",
+    "dev": "concurrently \"cd frontend && npm start\" \"cd backend && npm start\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

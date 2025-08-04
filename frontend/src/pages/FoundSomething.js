@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from "firebase/auth";
+import API_ENDPOINTS from "../config/api.js";
 
 
 function FoundSomething() {
@@ -22,7 +23,7 @@ function FoundSomething() {
 
     const folder = "found-items"; // Specify the folder for found items
     const { url, imageName } = await fetch(
-      `http://localhost:5001/generate-url?folder=${folder}`
+      API_ENDPOINTS.generateUrl(folder)
     )
       .then((res) => res.json())
       .catch((err) => {
@@ -46,7 +47,7 @@ function FoundSomething() {
     formData.imageName = imageName;
     formData.userId = userId
     console.log("JSON.stringify result:", JSON.stringify(formData));
-    const response = await fetch("http://localhost:5001/saveFoundSomething", {
+    const response = await fetch(API_ENDPOINTS.saveFoundSomething, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

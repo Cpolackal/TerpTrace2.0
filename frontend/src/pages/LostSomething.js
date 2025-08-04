@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
+import API_ENDPOINTS from "../config/api.js";
 
 function LostSomething() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function LostSomething() {
     e.preventDefault();
     const folder = "lost-items";
     const { url, imageName } = await fetch(
-      `http://localhost:5001/generate-url?folder=${folder}`
+      API_ENDPOINTS.generateUrl(folder)
     )
       .then((res) => res.json())
       .catch((err) => {
@@ -50,7 +51,7 @@ function LostSomething() {
     };
 
     console.log(JSON.stringify(data));
-    const response = await fetch("http://localhost:5001/saveLostSomething", {
+    const response = await fetch(API_ENDPOINTS.saveLostSomething, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
