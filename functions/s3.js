@@ -25,8 +25,12 @@ async function generateDownloadURL(key, s3Client) {
     Key: key,
   });
 
-  const url = await getSignedUrl(s3Client, command, { expiresIn: 1000 });
-  return url;
+  //const url = await getSignedUrl(s3Client, command, { expiresIn: 1000 });
+  //console.log("Download url: ", url);
+  const response = await s3Client.send(command);
+  console.log("message: ", response);
+  console.log("fetch status: ", response.status);
+  return response;
 }
 
 async function generateUploadURL(folder = "uploads", s3Client) {
