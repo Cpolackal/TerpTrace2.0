@@ -23,8 +23,8 @@ const fetch = require("node-fetch");
 const pineconeApiKey = defineSecret("PINECONE_API_KEY");
 const pineconeIndex = defineSecret("PINECONE_INDEX");
 const pineconeControllerUrl = defineSecret("PINECONE_CONTROLLER_URL");
-const s3AccessKeyId = defineSecret("S3_ACCESS_KEY_ID");
-const s3SecretAccessKey = defineSecret("S3_SECRET_ACCESS_KEY");
+const s3AccessKeyId = defineSecret("S3_ACCESS_KEY_ID").trim();
+const s3SecretAccessKey = defineSecret("S3_SECRET_ACCESS_KEY").trim();
 const titanAccessKeyId = defineSecret("TITAN_ACCESS_KEY_ID");
 const titanSecretAccessKey = defineSecret("TITAN_SECRET_ACCESS_KEY");
 
@@ -137,6 +137,7 @@ exports.saveLostSomething = onRequest(
           s3AccessKeyId.value(),
           s3SecretAccessKey.value()
         );
+        console.log("Signing time (local):", new Date().toISOString());
         const downloadUrl = await generateDownloadURL(imageName, s3Client);
         console.log("received url");
         console.log("fetch type:", typeof fetch);
@@ -147,7 +148,7 @@ exports.saveLostSomething = onRequest(
         } catch (error) {
           console.log("Error getting download url", error);
         }
-        console.log("message: ", await response.text());
+        console.log("message: ", response);
         console.log("fetch status: ", response.status);
         if (!response.ok) {
           throw new Error("Failed to fetch image from S3");

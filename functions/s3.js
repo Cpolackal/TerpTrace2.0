@@ -1,5 +1,10 @@
 const crypto = require("crypto");
-const aws = require("aws-sdk");
+const {
+  S3Client,
+  GetObjectCommand,
+  PutObjectCommand,
+} = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 const region = "us-east-2"; // Update to your region
 const bucketName = "terpitems"; // Update to your bucket name
@@ -8,34 +13,33 @@ const bucketName = "terpitems"; // Update to your bucket name
 function createS3Client(accessKeyId, secretAccessKey) {
   return new aws.S3({
     region,
-    accessKeyId,
-    secretAccessKey,
-    signatureVersion: "v4",
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+    },
   });
 }
 
 async function generateDownloadURL(key, s3Client) {
-  const params = {
+  const command = new GetObjectCommand({
     Bucket: bucketName,
     Key: key,
-    Expires: 300,
-  };
+  });
 
-  const url = await s3Client.getSignedUrlPromise("getObject", params);
+  const url = await getSignedUrl(s3Client, command, { expiresIn: 300 });
   return url;
 }
 
 async function generateUploadURL(folder = "uploads", s3Client) {
   const rawBytes = crypto.randomBytes(16);
   const imageName = rawBytes.toString("hex");
-
   const key = `${folder}/${imageName}`;
-  const params = {
+  const command = new PutObjectCommand({
     Bucket: bucketName,
     Key: key,
-    Expires: 60,
-  };
-  const url = await s3Client.getSignedUrlPromise("putObject", params);
+    ContentType: "image/jpeg", // Adjust content type as needed
+  });
+  const url = await getSignedUrl(s3Client, command, { expiresIn: 60 });
   return { url, key };
 }
 
@@ -43,4 +47,4 @@ module.exports = {
   createS3Client,
   generateDownloadURL,
   generateUploadURL,
-}; 
+};
