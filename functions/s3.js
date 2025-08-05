@@ -1,30 +1,31 @@
-import crypto from "crypto";
-import aws from "aws-sdk";
+const crypto = require("crypto");
+const aws = require("aws-sdk");
 
 const region = "us-east-2"; // Update to your region
 const bucketName = "terpitems"; // Update to your bucket name
-const accessKeyId = process.env.S3_ACCESS_KEY_ID;
-const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
 
-const s3 = new aws.S3({
-  region,
-  accessKeyId,
-  secretAccessKey,
-  signatureVersion: "v4",
-});
+// These will be passed as parameters from the main function
+function createS3Client(accessKeyId, secretAccessKey) {
+  return new aws.S3({
+    region,
+    accessKeyId,
+    secretAccessKey,
+    signatureVersion: "v4",
+  });
+}
 
-export async function generateDownloadURL(key) {
+async function generateDownloadURL(key, s3Client) {
   const params = {
     Bucket: bucketName,
     Key: key,
     Expires: 300,
   };
 
-  const url = await s3.getSignedUrlPromise("getObject", params);
+  const url = await s3Client.getSignedUrlPromise("getObject", params);
   return url;
 }
 
-export async function generateUploadURL(folder = "uploads") {
+async function generateUploadURL(folder = "uploads", s3Client) {
   const rawBytes = crypto.randomBytes(16);
   const imageName = rawBytes.toString("hex");
 
@@ -34,6 +35,12 @@ export async function generateUploadURL(folder = "uploads") {
     Key: key,
     Expires: 60,
   };
-  const url = await s3.getSignedUrlPromise("putObject", params);
+  const url = await s3Client.getSignedUrlPromise("putObject", params);
   return { url, key };
-} 
+}
+
+module.exports = {
+  createS3Client,
+  generateDownloadURL,
+  generateUploadURL,
+}; 

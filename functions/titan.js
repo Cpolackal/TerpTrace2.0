@@ -1,25 +1,29 @@
-import {
+const {
   BedrockRuntimeClient,
   InvokeModelCommand,
-} from "@aws-sdk/client-bedrock-runtime";
+} = require("@aws-sdk/client-bedrock-runtime");
 
 const region = "us-east-1";
 const modelId = "amazon.titan-embed-image-v1";
 const textModelId = "amazon.titan-embed-text-v2:0";
 
-const bedrockClient = new BedrockRuntimeClient({
-  region: region,
-  credentials: {
-    accessKeyId: process.env.TITAN_ACCESS_KEY_ID,
-    secretAccessKey: process.env.TITAN_SECRET_ACCESS_KEY,
-  },
-});
+function createBedrockClient(accessKeyId, secretAccessKey) {
+  return new BedrockRuntimeClient({
+    region: region,
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+    },
+  });
+}
 
-export async function getTitanEmbedding(imageBytes) {
+async function getTitanEmbedding(imageBytes, bedrockClient) {
   try {
     // Convert image bytes to base64
+
     const base64Image = imageBytes.toString("base64");
 
+    //console.log(base64Image);
     // Create the JSON payload
     const payload = {
       inputImage: base64Image,
@@ -37,6 +41,7 @@ export async function getTitanEmbedding(imageBytes) {
     const response = await bedrockClient.send(command);
 
     // The response body is a Uint8Array (Buffer), parse as JSON
+
     const responseBody = Buffer.from(response.body).toString();
     if (!responseBody) {
       throw new Error("Response body is empty");
@@ -51,7 +56,7 @@ export async function getTitanEmbedding(imageBytes) {
   }
 }
 
-export async function getTitanTextEmbedding(inputText) {
+async function getTitanTextEmbedding(inputText, bedrockClient) {
   console.log("reached titan call");
   const payload = {
     inputText: inputText,
@@ -80,7 +85,7 @@ export async function getTitanTextEmbedding(inputText) {
   }
 }
 
-export async function getNorm(vector1, vector2, weight1 = 0.6, weight2 = 0.4) {
+async function getNorm(vector1, vector2, weight1 = 0.6, weight2 = 0.4) {
   if (vector1.length !== vector2.length) {
     throw new Error("Vectors must be of the same length");
   }
@@ -98,4 +103,11 @@ export async function getNorm(vector1, vector2, weight1 = 0.6, weight2 = 0.4) {
   }
   const norm = weightedVector.map((value) => value / magnitude);
   return norm;
-} 
+}
+
+module.exports = {
+  createBedrockClient,
+  getTitanEmbedding,
+  getTitanTextEmbedding,
+  getNorm,
+}; 

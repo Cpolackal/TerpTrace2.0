@@ -1,6 +1,6 @@
-import sharp from "sharp";
+const sharp = require("sharp");
 
-export async function resize(imageBuffer, maxWidth = 1680, maxHeight = 1680){
+async function resize(imageBuffer, maxWidth = 1680, maxHeight = 1680){
     return await sharp(imageBuffer)
     .resize({
       width: maxWidth,
@@ -10,4 +10,8 @@ export async function resize(imageBuffer, maxWidth = 1680, maxHeight = 1680){
     })
     .toFormat('jpeg') 
     .toBuffer();
-} 
+}
+
+module.exports = {
+  resize,
+}; 

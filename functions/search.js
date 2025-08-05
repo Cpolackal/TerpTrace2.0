@@ -1,4 +1,4 @@
-export async function searchImages(pc_index, embedding) {
+async function searchImages(pc_index, embedding) {
   const response = await pc_index.query({
     topK: 3,
     vector: embedding,
@@ -6,4 +6,8 @@ export async function searchImages(pc_index, embedding) {
   });
   console.log("response from search image: ", response);
   return response.matches;
-} 
+}
+
+module.exports = {
+  searchImages,
+}; 
