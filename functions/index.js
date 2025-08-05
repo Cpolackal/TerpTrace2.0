@@ -147,7 +147,7 @@ exports.saveLostSomething = onRequest(
         } catch (error) {
           console.log("Error getting download url", error);
         }
-        console.log("message: ", response);
+        console.log("message: ", await response.text());
         console.log("fetch status: ", response.status);
         if (!response.ok) {
           throw new Error("Failed to fetch image from S3");
