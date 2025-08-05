@@ -25,7 +25,7 @@ async function generateDownloadURL(key, s3Client) {
     Key: key,
   });
 
-  const url = await getSignedUrl(s3Client, command, { expiresIn: 300 });
+  const url = await getSignedUrl(s3Client, command, { expiresIn: 1000 });
   return url;
 }
 
@@ -36,9 +36,9 @@ async function generateUploadURL(folder = "uploads", s3Client) {
   const command = new PutObjectCommand({
     Bucket: bucketName,
     Key: key,
-    ContentType: "image/jpeg", // Adjust content type as needed
+    ContentType: "image/*",
   });
-  const url = await getSignedUrl(s3Client, command, { expiresIn: 60 });
+  const url = await getSignedUrl(s3Client, command, { expiresIn: 500 });
   return { url, key };
 }
 

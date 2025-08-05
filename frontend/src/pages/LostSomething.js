@@ -20,14 +20,14 @@ function LostSomething() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const folder = "lost-items";
-    const { url, imageName } = await fetch(
-      API_ENDPOINTS.generateUrl(folder)
-    )
+    const { url, imageName } = await fetch(API_ENDPOINTS.generateUrl(folder))
       .then((res) => res.json())
       .catch((err) => {
         console.error("Error generating URL:", err);
         return { url: null, imageName: null };
       });
+
+    console.log("Generated URL:", url);
 
     await fetch(url, {
       method: "PUT",
@@ -59,15 +59,15 @@ function LostSomething() {
       body: JSON.stringify(data),
     });
     // need to edit the response_data to include the item_id
-    const response_data = await response.json()
-    const matches = response_data.matches
-    const lostItemId = response_data.lostItemId
+    const response_data = await response.json();
+    const matches = response_data.matches;
+    const lostItemId = response_data.lostItemId;
     navigate("/MatchesForLostItem", {
       state: {
         matches: matches,
         lostItemId: lostItemId,
-      }
-    })
+      },
+    });
     //need a navigation route here to matches page
   };
 
