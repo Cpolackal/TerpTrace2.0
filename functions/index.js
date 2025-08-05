@@ -23,8 +23,8 @@ const fetch = require("node-fetch");
 const pineconeApiKey = defineSecret("PINECONE_API_KEY");
 const pineconeIndex = defineSecret("PINECONE_INDEX");
 const pineconeControllerUrl = defineSecret("PINECONE_CONTROLLER_URL");
-const s3AccessKeyId = defineSecret("S3_ACCESS_KEY_ID").trim();
-const s3SecretAccessKey = defineSecret("S3_SECRET_ACCESS_KEY").trim();
+const s3AccessKeyId = defineSecret("S3_ACCESS_KEY_ID");
+const s3SecretAccessKey = defineSecret("S3_SECRET_ACCESS_KEY");
 const titanAccessKeyId = defineSecret("TITAN_ACCESS_KEY_ID");
 const titanSecretAccessKey = defineSecret("TITAN_SECRET_ACCESS_KEY");
 
@@ -62,8 +62,8 @@ exports.generateUrl = onRequest(
       try {
         const folder = req.query.folder;
         const s3Client = createS3Client(
-          s3AccessKeyId.value(),
-          s3SecretAccessKey.value()
+          s3AccessKeyId.value().trim(),
+          s3SecretAccessKey.value().trim()
         );
         const { url, key: imageName } = await generateUploadURL(
           folder,

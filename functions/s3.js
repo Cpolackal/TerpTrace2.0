@@ -5,14 +5,13 @@ const {
   PutObjectCommand,
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-
 const region = "us-east-2"; // Update to your region
 const bucketName = "terpitems"; // Update to your bucket name
 
 // These will be passed as parameters from the main function
 function createS3Client(accessKeyId, secretAccessKey) {
-  return new aws.S3({
-    region,
+  return new S3Client({
+    region: region,
     credentials: {
       accessKeyId,
       secretAccessKey,
