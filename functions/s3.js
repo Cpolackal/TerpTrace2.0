@@ -10,6 +10,10 @@ const bucketName = "terpitems"; // Update to your bucket name
 
 // These will be passed as parameters from the main function
 function createS3Client(accessKeyId, secretAccessKey) {
+  accessKeyId = accessKeyId.trim();
+  secretAccessKey = secretAccessKey.trim();
+  console.log("accessKeyId:", JSON.stringify(accessKeyId));
+  console.log("secretAccessKey:", JSON.stringify(secretAccessKey));
   return new S3Client({
     region: region,
     credentials: {

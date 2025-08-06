@@ -45,9 +45,9 @@ exports.test = onRequest(
       res.json({
         message: "Firebase Functions server is running",
         env: {
-          hasPinecone: !!pineconeApiKey.value(),
-          hasS3: !!s3AccessKeyId.value(),
-          hasTitan: !!titanAccessKeyId.value(),
+          hasPinecone: !!pineconeApiKey.value().trim(),
+          hasS3: !!s3AccessKeyId.value().trim(),
+          hasTitan: !!titanAccessKeyId.value().trim(),
         },
       });
     });
@@ -121,21 +121,27 @@ exports.saveLostSomething = onRequest(
 
         // Initialize Pinecone with secrets
         const pinecone = new Pinecone({
-          apiKey: pineconeApiKey.value(),
+          apiKey: pineconeApiKey.value().trim(),
         });
 
         const lostItems = pinecone
-          .index(pineconeIndex.value(), pineconeControllerUrl.value())
+          .index(
+            pineconeIndex.value().trim(),
+            pineconeControllerUrl.value().trim()
+          )
           .namespace("lost-items");
 
         const foundItems = pinecone
-          .index(pineconeIndex.value(), pineconeControllerUrl.value())
+          .index(
+            pineconeIndex.value().trim(),
+            pineconeControllerUrl.value().trim()
+          )
           .namespace("found-items");
 
         const sentence = `${itemName} ${description}`;
         const s3Client = createS3Client(
-          s3AccessKeyId.value(),
-          s3SecretAccessKey.value()
+          s3AccessKeyId.value().trim(),
+          s3SecretAccessKey.value().trim()
         );
         console.log("Signing time (local):", new Date().toISOString());
         const downloadUrl = await generateDownloadURL(imageName, s3Client);
@@ -163,8 +169,8 @@ exports.saveLostSomething = onRequest(
         }
 
         const bedrockClient = createBedrockClient(
-          titanAccessKeyId.value(),
-          titanSecretAccessKey.value()
+          titanAccessKeyId.value().trim(),
+          titanSecretAccessKey.value().trim()
         );
         let embedding;
         try {
@@ -243,20 +249,26 @@ exports.saveFoundSomething = onRequest(
 
         // Initialize Pinecone with secrets
         const pinecone = new Pinecone({
-          apiKey: pineconeApiKey.value(),
+          apiKey: pineconeApiKey.value().trim(),
         });
 
         const lostItems = pinecone
-          .index(pineconeIndex.value(), pineconeControllerUrl.value())
+          .index(
+            pineconeIndex.value().trim(),
+            pineconeControllerUrl.value().trim()
+          )
           .namespace("lost-items");
 
         const foundItems = pinecone
-          .index(pineconeIndex.value(), pineconeControllerUrl.value())
+          .index(
+            pineconeIndex.value().trim(),
+            pineconeControllerUrl.value().trim()
+          )
           .namespace("found-items");
 
         const s3Client = createS3Client(
-          s3AccessKeyId.value(),
-          s3SecretAccessKey.value()
+          s3AccessKeyId.value().trim(),
+          s3SecretAccessKey.value().trim()
         );
         const downloadUrl = await generateDownloadURL(imageName, s3Client);
         const response = await fetch(downloadUrl);
@@ -273,8 +285,8 @@ exports.saveFoundSomething = onRequest(
         }
 
         const bedrockClient = createBedrockClient(
-          titanAccessKeyId.value(),
-          titanSecretAccessKey.value()
+          titanAccessKeyId.value().trim(),
+          titanSecretAccessKey.value().trim()
         );
         let embedding;
         try {
@@ -331,11 +343,14 @@ exports.setFoundItemMatch = onRequest(
 
         // Initialize Pinecone with secrets
         const pinecone = new Pinecone({
-          apiKey: pineconeApiKey.value(),
+          apiKey: pineconeApiKey.value().trim(),
         });
 
         const lostItems = pinecone
-          .index(pineconeIndex.value(), pineconeControllerUrl.value())
+          .index(
+            pineconeIndex.value().trim(),
+            pineconeControllerUrl.value().trim()
+          )
           .namespace("lost-items");
 
         const result = await lostItems.fetch([lostItemId]);

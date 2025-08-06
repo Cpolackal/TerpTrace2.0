@@ -10,4 +10,4 @@ async function searchImages(pc_index, embedding) {
 
 module.exports = {
   searchImages,
-}; 
+};

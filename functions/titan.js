@@ -8,6 +8,8 @@ const modelId = "amazon.titan-embed-image-v1";
 const textModelId = "amazon.titan-embed-text-v2:0";
 
 function createBedrockClient(accessKeyId, secretAccessKey) {
+  accessKeyId = accessKeyId.trim();
+  secretAccessKey = secretAccessKey.trim();
   return new BedrockRuntimeClient({
     region: region,
     credentials: {
@@ -110,4 +112,4 @@ module.exports = {
   getTitanEmbedding,
   getTitanTextEmbedding,
   getNorm,
-}; 
+};
