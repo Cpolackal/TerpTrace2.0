@@ -144,18 +144,20 @@ exports.saveLostSomething = onRequest(
           s3SecretAccessKey.value().trim()
         );
         console.log("Signing time (local):", new Date().toISOString());
-        const downloadUrl = await generateDownloadURL(imageName, s3Client);
-        console.log("received url");
-        console.log("fetch type:", typeof fetch);
-        console.log(downloadUrl);
         let response;
         try {
-          response = await fetch(downloadUrl);
+          response = await generateDownloadURL(imageName, s3Client);
         } catch (error) {
-          console.log("Error getting download url", error);
+           console.log("Error generating download url", error);
         }
-        console.log("message: ", response);
-        console.log("fetch status: ", response.status);
+        
+        console.log("fetch type:", typeof fetch);
+        // try {
+        //   response = await fetch(downloadUrl);
+        // } catch (error) {
+        //   console.log("Error getting download url", error);
+        // }
+        
         if (!response.ok) {
           throw new Error("Failed to fetch image from S3");
         }
